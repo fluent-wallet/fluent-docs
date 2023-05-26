@@ -6,18 +6,18 @@ const remarkCodesandbox = require("remark-codesandbox");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "MetaMask docs",
+  title: "Fluent Wallet docs",
   // tagline: '',
-  url: "https://docs.metamask.io",
+  url: "https://docs.fluent.wallet",
   baseUrl: process.env.DEST || "/", // overwritten in github action for staging / latest
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "img/metamask-fox.svg",
+  favicon: "img/fluent-icon.svg",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "metamask", // Usually your GitHub org/user name.
-  projectName: "metamask-docs", // Usually your repo name.
+  organizationName: "fluent-wallet", // Usually your GitHub org/user name.
+  projectName: "fluent-docs", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -28,7 +28,7 @@ const config = {
   },
 
   scripts: [
-    { src: "https://plausible.io/js/script.js", defer: true, "data-domain": "docs.metamask.io" },
+    { src: "https://plausible.io/js/script.js", defer: true, "data-domain": "docs.fluent.wallet" },
   ],
 
   presets: [
@@ -201,9 +201,9 @@ const config = {
       navbar: {
         title: " │ ‎ Documentation",
         logo: {
-          alt: "MetaMask logo",
-          src: "img/metamask-logo.svg",
-          srcDark: "img/metamask-logo-dark.svg",
+          alt: "Fluent logo",
+          src: "img/fluent-logo.svg",
+          srcDark: "img/fluent-logo-dark.svg",
           href: "/wallet/",
           width: 150,
         },
@@ -213,20 +213,14 @@ const config = {
             docId: "index",
             label: "Wallet",
           },
-          {
-            type: "doc",
-            docId: "index",
-            docsPluginId: "snaps",
-            label: "Snaps",
-          },
         ],
       },
       footer: {
         logo: {
-          alt: "MetaMask logo",
-          src: "img/metamask-logo.svg",
-          srcDark: "img/metamask-logo-dark.svg",
-          href: "https://metamask.io/",
+          alt: "Fluent logo",
+          src: "img/fluent-logo.svg",
+          srcDark: "img/fluent-icon.svg",
+          href: "https://fluent.wallet/",
           width: 250,
         },
         links: [
@@ -256,70 +250,41 @@ const config = {
             ],
           },
           {
-            title: "Snaps",
-            items: [
-              {
-                label: "Introduction",
-                to: "/snaps",
-              },
-              {
-                label: "Get started",
-                to: "/snaps/category/get-started",
-              },
-              {
-                label: "How to guides",
-                to: "/snaps/category/how-to",
-              },
-              {
-                label: "Tutorials",
-                to: "/snaps/category/tutorials",
-              },
-              {
-                label: "Reference",
-                to: "/snaps/category/reference",
-              },
-            ],
-          },
-          {
             title: "Community",
             items: [
               {
-                label: "ConsenSys Discord",
-                href: "https://discord.gg/consensys",
+                label: "Fluent Twitter",
+                href: "https://twitter.com/FluentWallet",
               },
               {
                 label: "Documentation GitHub",
-                href: "https://github.com/MetaMask/metamask-docs",
+                href: "https://github.com/fluent-wallet/fluent-docs",
               },
               {
-                label: "MetaMask wallet GitHub",
-                href: "https://github.com/MetaMask/metamask-extension/",
-              },
-              {
-                label: "Snaps GitHub",
-                href: "https://github.com/MetaMask/snaps-monorepo",
+                label: "Fluent wallet GitHub",
+                href: "https://github.com/Conflux-Chain/helios",
               },
             ],
           },
-          {
-            title: "Legal",
-            items: [
-              {
-                label: "Privacy Policy",
-                href: "https://consensys.net/privacy-policy/",
-              },
-              {
-                label: "Terms of Use",
-                href: "https://consensys.net/terms-of-use/",
-              },
-              {
-                label: "Contributor License Agreement",
-                href: "https://metamask.io/cla/",
-              },
-            ],
-          },
+          // {
+          //   title: "Legal",
+          //   items: [
+          //     {
+          //       label: "Privacy Policy",
+          //       href: "https://consensys.net/privacy-policy/",
+          //     },
+          //     {
+          //       label: "Terms of Use",
+          //       href: "https://consensys.net/terms-of-use/",
+          //     },
+          //     {
+          //       label: "Contributor License Agreement",
+          //       href: "https://metamask.io/cla/",
+          //     },
+          //   ],
+          // },
         ],
-        copyright: `© ${new Date().getFullYear()} MetaMask • A ConsenSys Formation`,
+        copyright: `© ${new Date().getFullYear()} Fluent Wallet • A Conflux Formation`,
       },
       prism: {
         theme: codeTheme,

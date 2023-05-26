@@ -2,27 +2,25 @@
 title: Introduction
 ---
 
-# Integrate with the MetaMask wallet
+# Integrate with the Fluent wallet
 
-Integrate your dapp with the MetaMask wallet using the
-[MetaMask Ethereum provider API](reference/provider-api.md), which enables your dapp to interact
-with its users' Ethereum accounts.
+Integrate your dapp with the Fluent wallet using the
+[Fluent Conflux provider API](reference/provider-api.md), which enables your dapp to interact
+with its users' Conflux accounts.
 We recommend using [MetaMask SDK](how-to/use-sdk) to easily enable your users to connect to their
-MetaMask wallet client from any platform.
+Fluent wallet client from any platform.
 
 Get started by [setting up your development environment](get-started/set-up-dev-environment.md).
 
 :::note
 - This documentation assumes intermediate knowledge of JavaScript, HTML, and CSS.
-- To learn how to extend the functionality of MetaMask, visit the
-  [MetaMask Snaps developer documentation](../snaps).
 :::
 
-## What is the MetaMask Ethereum provider API?
+## What is the Fluent Conflux provider API?
 
-The [MetaMask Ethereum provider API](reference/provider-api.md) is a JavaScript API that MetaMask
-injects into websites visited by MetaMask users.
-Your dapp can use this API to request users' Ethereum accounts, read data from blockchains the user
+The [Fluent Conflux provider API](reference/provider-api.md) is a JavaScript API that Fluent
+injects into websites visited by Fluent users.
+Your dapp can use this API to request users' Conflux accounts, read data from blockchains the user
 is connected to, and suggest that the user sign messages and transactions.
 
 ## What is MetaMask SDK?
@@ -42,5 +40,5 @@ Mobile wallet to make the connection.
 
 ## Questions?
 
-If you have questions about integrating your dapp with MetaMask, you can interact with the MetaMask
-team and community on the MetaMask channels on [ConsenSys Discord](https://discord.gg/consensys).
+If you have questions about integrating your dapp with Fluent Wallet, you can interact with the Fluent
+team and community on the Fluent Wallet issues on [Fluent Issues](https://github.com/Conflux-Chain/helios/issues) or [Zendesk](https://fluent-wallet.zendesk.com/hc/en-001/requests/new).
