@@ -1,78 +1,60 @@
 ---
-description: MetaMask Ethereum JSON-RPC API reference
+description: Fluent Conflux JSON-RPC API reference
 ---
 
 # JSON-RPC API
 
-MetaMask uses the [`window.ethereum.request(args)`](provider-api.md#windowethereumrequestargs)
+Fluent uses the [`window.conflux.request(args)`](provider-api.md#windowconfluxrequestargs)
 provider method to wrap a JSON-RPC API.
-The API contains standard Ethereum JSON-RPC API methods and MetaMask-specific methods.
+The API contains standard Conflux JSON-RPC API methods and Fluent-specific methods.
 
-:::tip MetaMask API playground
-The RPC methods are documented in the interactive
-[MetaMask JSON-RPC API Playground](https://metamask.github.io/api-playground/api-documentation/).
-:::
 
-Methods in the API playground may have the following tags:
-
-- **MetaMask** - These methods behave in ways specific to MetaMask, and may or may not be supported
-  by other wallets.
-  Some of these methods are documented in more detail on this page.
-- **Restricted** - These methods are [restricted](#restricted-methods), which require requesting
-  permission using [`wallet_requestPermissions`](#wallet_requestpermissions).
-- **Mobile** - These methods are only available on MetaMask Mobile.
-
-For more information on the standard Ethereum RPC methods, see the
-[Ethereum wiki](https://eth.wiki/json-rpc/API#json-rpc-methods).
+For more information on the standard Conflux RPC methods, see the
+[Conflux RPC Methods](https://developer.confluxnetwork.org/conflux-doc/docs/json_rpc#json-rpc-methods).
 
 :::note
 All RPC method requests can return errors.
 Make sure to handle errors for every call to
-[`window.ethereum.request(args)`](provider-api.md#windowethereumrequestargs).
+[`window.conflux.request(args)`](provider-api.md#windowconfluxrequestargs).
 :::
 
 ## Restricted methods
 
-MetaMask introduced web3 wallet permissions in [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255).
+Fluent introduced web3 wallet permissions in [EIP-2255](https://eips.ethereum.org/EIPS/eip-2255).
 In this permissions system, each RPC method is restricted or unrestricted.
 If a method is restricted, a dapp must request permission to call it using
 [`wallet_requestPermssions`](#wallet_requestpermissions).
 Under the hood, permissions are plain, JSON-compatible objects, with fields that are mostly used
-internally by MetaMask.
+internally by Fluent.
 
-Outside of [Snaps restricted methods](../../snaps/reference/rpc-api#restricted-methods), the only
-restricted method is
-[`eth_accounts`](https://metamask.github.io/api-playground/api-documentation/#eth_accounts), which
-allows you to access the user's Ethereum accounts.
-More restricted methods will be added in the future.
 
 ## Unrestricted methods
 
 Unrestricted methods have no corresponding permission, but they might still rely on permissions to
 succeed (for example, the signing methods require calling the restricted
-[`eth_accounts`](https://metamask.github.io/api-playground/api-documentation/#eth_accounts) method),
+[`cfx_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_accounts) method),
 or they might require confirmation by the user (for example,
-[`wallet_addEthereumChain`](#wallet_addethereumchain)).
+[`wallet_addConfluxChain`](#wallet_addconfluxchain)).
 
-The following are some MetaMask-specific unrestricted methods.
-For the full list of MetaMask JSON-RPC API methods, see the
-[API playground](https://metamask.github.io/api-playground/api-documentation/).
+The following are some Fluent-specific unrestricted methods.
+For the full list of Fluent JSON-RPC API methods, see the
+[Fluent API](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc).
 
-### eth_requestAccounts
+### cfx_requestAccounts
 
-Requests that the user provide an Ethereum address to be identified by.
+Requests that the user provide an Conflux address to be identified by.
 Use this method to [access a user's accounts](../get-started/access-accounts.md).
 
 This method is specified by [EIP-1102](https://eips.ethereum.org/EIPS/eip-1102).
 
 :::info
 Internally, this method calls [`wallet_requestPermissions`](#wallet_requestpermissions) for
-permission to call [`eth_accounts`](https://metamask.github.io/api-playground/api-documentation/#eth_accounts).
+permission to call [`cfx_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_accounts).
 :::
 
 #### Returns
 
-If the user accepts the request, this method returns an array of a single, hexadecimal Ethereum
+If the user accepts the request, this method returns an array of a single Conflux
 address string.
 If they reject the request, this method rejects with a `4001` error.
 
@@ -83,12 +65,12 @@ document.getElementById('connectButton', connect);
 
 function connect() {
   ethereum
-    .request({ method: 'eth_requestAccounts' })
+    .request({ method: 'cfx_requestAccounts' })
     .then(handleAccountsChanged)
     .catch((error) => {
       if (error.code === 4001) {
         // EIP-1193 userRejectedRequest error
-        console.log('Please connect to MetaMask.');
+        console.log('Please connect to Fluent .');
       } else {
         console.error(error);
       }
@@ -100,10 +82,6 @@ function connect() {
 
 Gets the caller's current [permissions](#restricted-methods).
 
-:::note
-This method is not yet available on MetaMask Mobile.
-:::
-
 #### Returns
 
 An array of the caller's permission objects.
@@ -113,12 +91,9 @@ If the caller has no permissions, the array is empty.
 
 Requests [permissions](#restricted-methods) from the user.
 
-The request causes a MetaMask popup to appear.
+The request causes a Fluent popup to appear.
 You should only request permissions in response to a direct user action, such as a button click.
 
-:::note
-This method is not yet available on MetaMask Mobile.
-:::
 
 #### Parameters
 
@@ -138,14 +113,14 @@ function requestPermissions() {
   ethereum
     .request({
       method: 'wallet_requestPermissions',
-      params: [{ eth_accounts: {} }],
+      params: [{ cfx_accounts: {} }],
     })
     .then((permissions) => {
       const accountsPermission = permissions.find(
-        (permission) => permission.parentCapability === 'eth_accounts'
+        (permission) => permission.parentCapability === 'cfx_accounts'
       );
       if (accountsPermission) {
-        console.log('eth_accounts permission successfully requested!');
+        console.log('cfx_accounts permission successfully requested!');
       }
     })
     .catch((error) => {
@@ -159,16 +134,16 @@ function requestPermissions() {
 }
 ```
 
-### wallet_addEthereumChain
+### wallet_addConfluxChain
 
-Creates a confirmation asking the user to add the specified chain to MetaMask.
+Creates a confirmation asking the user to add the specified chain to Fluent.
 The user may choose to switch to the chain once it has been added.
 
 You should only call this method in response to a direct user action, such as a button click.
 
-MetaMask validates the parameters for this method, and rejects the request if any parameter is
+Fluent validates the parameters for this method, and rejects the request if any parameter is
 incorrectly formatted.
-MetaMask also rejects the request if any of the following occurs:
+Fluent also rejects the request if any of the following occurs:
 
 - The RPC endpoint doesn't respond to RPC calls.
   :::note
@@ -176,14 +151,14 @@ MetaMask also rejects the request if any of the following occurs:
   If you use an origin allowlist, they're blocked.
   :::
 - The RPC endpoint returns a different chain ID when
-  [`eth_chainId`](https://metamask.github.io/api-playground/api-documentation/#eth_chainId) is called.
-- The chain ID corresponds to any default MetaMask chains.
+  [`cfx_chainId`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_chainid) is called.
+- The chain ID corresponds to any default Fluent chains.
 
 This method is specified by [EIP-3085](https://eips.ethereum.org/EIPS/eip-3085).
 
 #### Parameters
 
-An array containing an object containing the following metadata about the chain to be added to MetaMask:
+An array containing an object containing the following metadata about the chain to be added to Fluent :
 
 - `chainId` - The chain ID as a `0x`-prefixed hexadecimal string.
 - `chainName` - The name of the chain.
@@ -204,20 +179,20 @@ An array containing an object containing the following metadata about the chain 
 
 #### Example
 
-We recommend using this method with [`wallet_addEthereumChain`](#wallet_addethereumchain):
+We recommend using this method with [`wallet_addConfluxChain`](#wallet_addconfluxchain):
 
 ```javascript
 try {
   await ethereum.request({
-    method: 'wallet_switchEthereumChain',
+    method: 'wallet_switchConfluxChain',
     params: [{ chainId: '0xf00' }],
   });
 } catch (switchError) {
-  // This error code indicates that the chain has not been added to MetaMask.
+  // This error code indicates that the chain has not been added to Fluent.
   if (switchError.code === 4902) {
     try {
       await ethereum.request({
-        method: 'wallet_addEthereumChain',
+        method: 'wallet_addConfluxChain',
         params: [
           {
             chainId: '0xf00',
@@ -234,16 +209,16 @@ try {
 }
 ```
 
-### wallet_switchEthereumChain
+### wallet_switchConfluxChain
 
 Creates a confirmation asking the user to switch to the chain with the specified chain ID.
 
 You should only call this method in response to a direct user action, such as a button click.
 
-MetaMask rejects the request if any of the following occurs:
+Fluent rejects the request if any of the following occurs:
 
 - The chain ID is malformed.
-- The chain with the specified chain ID hasn't been added to MetaMask.
+- The chain with the specified chain ID hasn't been added to Fluent.
 
 This method is specified by [EIP-3326](https://ethereum-magicians.org/t/eip-3326-wallet-switchethereumchain).
 
@@ -255,33 +230,18 @@ An array containing an object containing `chainId`, the chain ID as a `0x`-prefi
 
 `null` if the request was successful, and an error otherwise.
 
-If the error code is `4902`, the requested chain hasn't been added by MetaMask, and you must request
-to add it using [`wallet_addEthereumChain`](#wallet_addethereumchain).
+If the error code is `4902`, the requested chain hasn't been added by Fluent, and you must request
+to add it using [`wallet_addConfluxChain`](#wallet_addconfluxchain).
 
 #### Example
 
-See the [`wallet_addEthereumChain`](#wallet_addethereumchain) example.
-
-### wallet_registerOnboarding
-
-Registers the requesting site with MetaMask as the initiator of onboarding, enabling MetaMask to
-redirect the user back to the site after onboarding has completed.
-
-This method is intended to be called after MetaMask has been installed, but before the MetaMask
-onboarding has completed.
-
-Instead of calling this method directly, you should
-[use the MetaMask onboarding library](../how-to/use-onboarding-library.md).
-
-#### Returns
-
-`true` if the request was successful, `false` otherwise.
+See the [`wallet_addConfluxChain`](#wallet_addconfluxchain) example.
 
 ### wallet_watchAsset
 
-Requests that the user track the specified token in MetaMask.
+Requests that the user track the specified token in Fluent .
 
-Most Ethereum wallets support some set of tokens, usually from a centrally curated registry of tokens.
+Most Conflux wallets support some set of tokens, usually from a centrally curated registry of tokens.
 This method enables dapp developers to ask their users to track tokens in their wallets, at runtime.
 Once added, the token is indistinguishable from those added using legacy methods, such as a
 centralized registry.
@@ -292,7 +252,7 @@ This method is specified by [EIP-747](https://eips.ethereum.org/EIPS/eip-747).
 
 An object containing the following metadata of the token to watch:
 
-- `type` - Currently only supports `ERC20`.
+- `type` - Currently only supports `CRC20`.
 - `options` - An object containing:
   - `address` - The address of the token contract.
   - `symbol` - The symbol of the token, up to 11 characters.
@@ -310,60 +270,21 @@ ethereum
   .request({
     method: 'wallet_watchAsset',
     params: {
-      type: 'ERC20',
+      type: 'CRC20',
       options: {
-        address: '0xb60e8dd61c5d32be8058bb8eb970870f07233155',
-        symbol: 'FOO',
+        address: 'cfx:acdrf821t59y12b4guyzckyuw2xf1gfpj2ba0x4sj6',
+        symbol: 'cETH',
         decimals: 18,
-        image: 'https://foo.io/token-image.svg',
+        image: 'https://scan-icons.oss-cn-hongkong.aliyuncs.com/mainnet/cfx%3Aacdrf821t59y12b4guyzckyuw2xf1gfpj2ba0x4sj6.png',
       },
     },
   })
   .then((success) => {
     if (success) {
-      console.log('FOO successfully added to wallet!');
+      console.log('cETH successfully added to wallet!');
     } else {
       throw new Error('Something went wrong.');
     }
   })
   .catch(console.error);
-```
-
-### wallet_scanQRCode
-
-Requests that the user scan a QR code using their device camera.
-
-MetaMask previously introduced this feature in [EIP-945](https://github.com/ethereum/EIPs/issues/945).
-The functionality was temporarily removed before being re-introduced as this RPC method.
-
-:::note
-This method is only available on MetaMask Mobile.
-:::
-
-#### Parameters
-
-An array containing an optional regular expression (regex) string for matching arbitrary QR code strings.
-
-#### Returns
-
-A string corresponding to the scanned QR code.
-If a regex string is provided, the resulting string matches it.
-If no regex string is provided, the resulting string matches an Ethereum address.
-If neither condition is met, the method returns an error.
-
-#### Example
-
-```javascript
-ethereum
-  .request({
-    method: 'wallet_scanQRCode',
-    // The regex string must be valid input to the RegExp constructor, if provided
-    params: ['\\D'],
-  })
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((error) => {
-    console.log(error);
-  });
 ```
