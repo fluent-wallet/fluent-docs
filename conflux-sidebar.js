@@ -12,7 +12,7 @@ const sidebar = {
       items: [
         "get-started/set-up-dev-environment",
         // "get-started/run-development-network",
-        "get-started/detect-metamask",
+        "get-started/detect-fluent",
         "get-started/detect-network",
         "get-started/access-accounts",
       ],

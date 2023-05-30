@@ -35,22 +35,18 @@ simple-dapp/
 
 For any Conflux dapp to work, your project script `index.js` must:
 
-- [Detect the Ethereum provider.](detect-metamask.md)
-- [Detect which Ethereum network the user is connected to.](detect-network.md)
-- [Access the user's Ethereum accounts.](access-accounts.md)
+- [Detect the Fluent provider.](detect-fluent)
+- [Detect which Ethereum network the user is connected to.](detect-network)
+- [Access the user's Ethereum accounts.](access-accounts)
 
 :::caution important
 If you import any modules into your project, such as
-[`@metamask/detect-provider`](https://github.com/MetaMask/detect-provider), use a bundler such as
+[`@cfxjs/use-wallet-react/conflux`](https://github.com/Conflux-Chain/use-wallet), use a bundler such as
 [Webpack](https://github.com/webpack/webpack) to compile the modules and create an output script
 `dist/main.js`.
 See [Webpack's Getting Started guide](https://webpack.js.org/guides/getting-started/) for more information.
 :::
 
-:::tip
-We also recommend [importing MetaMask SDK](../how-to/use-sdk/index.md) to enable a reliable, secure,
-and seamless connection from your dapp to a MetaMask wallet client.
-:::
 
 ## Example
 
@@ -62,21 +58,19 @@ The following is an example simple dapp script and HTML file:
 
 ```javascript title="index.js"
 /*****************************************/
-/* Detect the MetaMask Ethereum provider */
+/* Detect the Fluent Conflux provider */
 /*****************************************/
 
-import detectEthereumProvider from '@metamask/detect-provider';
-
-const provider = await detectEthereumProvider();
+import { provider } from '@cfxjs/use-wallet-react/conflux';
 
 if (provider) {
   startApp(provider);
 } else {
-  console.log('Please install MetaMask!');
+  console.log('Please install Fluent Wallet!');
 }
 
 function startApp(provider) {
-  if (provider !== window.ethereum) {
+  if (provider !== window.conflux) {
     console.error('Do you have multiple wallets installed?');
   }
 }
@@ -85,9 +79,9 @@ function startApp(provider) {
 /* Handle chain (network) and chainChanged (per EIP-1193) */
 /**********************************************************/
 
-const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+const chainId = await window.conflux.request({ method: 'cfx_chainId' });
 
-window.ethereum.on('chainChanged', handleChainChanged);
+window.conflux.on('chainChanged', handleChainChanged);
 
 function handleChainChanged(chainId) {
   window.location.reload();
@@ -98,17 +92,17 @@ function handleChainChanged(chainId) {
 /***********************************************************/
 
 let currentAccount = null;
-window.ethereum.request({ method: 'eth_accounts' })
+window.conflux.request({ method: 'cfx_accounts' })
   .then(handleAccountsChanged)
   .catch((err) => {
     console.error(err);
   });
 
-window.ethereum.on('accountsChanged', handleAccountsChanged);
+window.conflux.on('accountsChanged', handleAccountsChanged);
 
 function handleAccountsChanged(accounts) {
   if (accounts.length === 0) {
-    console.log('Please connect to MetaMask.');
+    console.log('Please connect to Fluent Wallet.');
   } else if (accounts[0] !== currentAccount) {
     currentAccount = accounts[0];
     showAccount.innerHTML = currentAccount;
@@ -119,18 +113,18 @@ function handleAccountsChanged(accounts) {
 /* Access the user's accounts (per EIP-1102) */
 /*********************************************/
 
-const ethereumButton = document.querySelector('.enableEthereumButton');
+const confluxButton = document.querySelector('.enableConfluxButton');
 const showAccount = document.querySelector('.showAccount');
 
-ethereumButton.addEventListener('click', () => {
+confluxButton.addEventListener('click', () => {
   getAccount();
 });
 
 async function getAccount() {
-  const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  const accounts = await window.conflux.request({ method: 'cfx_requestAccounts' })
     .catch((err) => {
       if (err.code === 4001) {
-        console.log('Please connect to MetaMask.');
+        console.log('Please connect to Fluent Wallet.');
       } else {
         console.error(err);
       }
@@ -149,11 +143,11 @@ async function getAccount() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Simple dapp</title>
-  <script type="module" src="main.js"></script>
+  <script type="module" src="index.js"></script>
 </head>
 <body>
   <!-- Display a connect button and the current account -->
-  <button class="enableEthereumButton">Enable Ethereum</button>
+  <button class="enableConfluxButton">Enable Conflux</button>
   <h2>Account: <span class="showAccount"></span></h2>
 </body>
 </html>
