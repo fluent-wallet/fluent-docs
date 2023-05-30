@@ -37,9 +37,9 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          path: "wallet",
-          routeBasePath: "wallet",
-          sidebarPath: require.resolve("./wallet-sidebar.js"),
+          path: "conflux",
+          routeBasePath: "conflux",
+          sidebarPath: require.resolve("./conflux-sidebar.js"),
           breadcrumbs: false,
           remarkPlugins: [
             require("remark-docusaurus-tabs"),
@@ -60,10 +60,10 @@ const config = {
       "content-docs",
       /** @type {import('@docusaurus/plugin-content-docs').PluginOptions} */
       ({
-        id: "snaps",
-        path: "snaps",
-        routeBasePath: "snaps",
-        sidebarPath: require.resolve("./snaps-sidebar.js"),
+        id: "espace",
+        path: "eSpace",
+        routeBasePath: "eSpace",
+        sidebarPath: require.resolve("./espace-sidebar.js"),
         breadcrumbs: false,
         remarkPlugins: [
           require("remark-docusaurus-tabs"),
@@ -77,115 +77,115 @@ const config = {
         redirects: [
           {
             from: "/guide/",
-            to: "/wallet/",
+            to: "/conflux/",
           },
           {
             from: "/guide/getting-started",
-            to: "/wallet/get-started/set-up-dev-environment",
+            to: "/conflux/get-started/set-up-dev-environment",
           },
           {
             from: "/guide/common-terms",
-            to: "/wallet/",
+            to: "/conflux/",
           },
           {
             from: "/guide/initializing-dapps",
-            to: "/wallet/how-to/interact-with-smart-contracts",
+            to: "/conflux/how-to/interact-with-smart-contracts",
           },
           {
             from: "/guide/accessing-accounts",
-            to: "/wallet/get-started/access-accounts",
+            to: "/conflux/get-started/access-accounts",
           },
           {
             from: "/guide/sending-transactions",
-            to: "/wallet/how-to/send-transactions",
+            to: "/conflux/how-to/send-transactions",
           },
           {
             from: "/guide/ethereum-provider",
-            to: "/wallet/reference/provider-api",
+            to: "/conflux/reference/provider-api",
           },
           {
             from: "/guide/provider-migration",
-            to: "/wallet/how-to/migrate-api",
+            to: "/conflux/how-to/migrate-api",
           },
           {
             from: "/guide/rpc-api",
-            to: "/wallet/reference/rpc-api",
+            to: "/conflux/reference/rpc-api",
           },
           {
             from: "/guide/signing-data",
-            to: "/wallet/how-to/sign-data",
+            to: "/conflux/how-to/sign-data",
           },
           {
             from: "/guide/registering-function-names",
-            to: "/wallet/how-to/register-method-names",
+            to: "/conflux/how-to/register-method-names",
           },
           {
             from: "/guide/registering-your-token",
-            to: "/wallet/how-to/register-token",
+            to: "/conflux/how-to/register-token",
           },
           {
             from: "/guide/defining-your-icon",
-            to: "/wallet/how-to/set-icon",
+            to: "/conflux/how-to/set-icon",
           },
           {
             from: "/guide/onboarding-library",
-            to: "/wallet/how-to/use-onboarding-library",
+            to: "/conflux/how-to/use-onboarding-library",
           },
           {
             from: "/guide/metamask-extension-provider",
-            to: "/wallet/how-to/access-provider",
+            to: "/conflux/how-to/access-provider",
           },
           {
             from: "/guide/mobile-getting-started",
-            to: "/wallet/how-to/use-mobile",
+            to: "/conflux/how-to/use-mobile",
           },
           {
             from: "/guide/site-compatibility-checklist",
-            to: "/wallet/how-to/use-mobile",
+            to: "/conflux/how-to/use-mobile",
           },
           {
             from: "/guide/mobile-best-practices",
-            to: "/wallet/how-to/use-mobile",
+            to: "/conflux/how-to/use-mobile",
           },
           {
-            from: "/guide/snaps",
-            to: "/snaps/",
+            from: "/guide/espace",
+            to: "/espace/",
           },
           {
-            from: "/guide/snaps-development-guide",
-            to: "/snaps/how-to/develop-a-snap",
+            from: "/guide/espace-development-guide",
+            to: "/espace/how-to/develop-a-snap",
           },
           {
-            from: "/guide/snaps-concepts",
-            to: "/snaps/category/concepts",
+            from: "/guide/espace-concepts",
+            to: "/espace/category/concepts",
           },
           {
-            from: "/guide/snaps-rpc-api",
-            to: "/snaps/reference/rpc-api",
+            from: "/guide/espace-rpc-api",
+            to: "/espace/reference/rpc-api",
           },
           {
-            from: "/guide/snaps-permissions",
-            to: "/snaps/how-to/request-permissions",
+            from: "/guide/espace-permissions",
+            to: "/espace/how-to/request-permissions",
           },
           {
-            from: "/guide/snaps-exports",
-            to: "/snaps/reference/exports",
+            from: "/guide/espace-exports",
+            to: "/espace/reference/exports",
           },
           {
-            from: "/guide/snaps-patching-dependencies",
-            to: "/snaps/how-to/troubleshoot",
+            from: "/guide/espace-patching-dependencies",
+            to: "/espace/how-to/troubleshoot",
           },
           {
             from: "/guide/create-dapp",
-            to: "/wallet/get-started/set-up-dev-environment",
+            to: "/conflux/get-started/set-up-dev-environment",
           },
           {
             from: "/guide/contributors",
-            to: "/wallet/",
+            to: "/conflux/",
           },
           {
-            from: "/wallet/tutorials/simple-react-dapp",
-            to: "/wallet/tutorials/react-dapp-local-state",
+            from: "/conflux/tutorials/simple-react-dapp",
+            to: "/conflux/tutorials/react-dapp-local-state",
           },
         ].reduce((acc, item) => {
           acc.push(item);
@@ -204,14 +204,20 @@ const config = {
           alt: "Fluent logo",
           src: "img/fluent-logo.svg",
           srcDark: "img/fluent-logo-dark.svg",
-          href: "/wallet/",
+          href: "/conflux/",
           width: 150,
         },
         items: [
           {
             type: "doc",
             docId: "index",
-            label: "Wallet",
+            label: "Conflux",
+          },
+          {
+            type: "doc",
+            docId: "index",
+            docsPluginId:"espace",
+            label: "eSpace",
           },
         ],
       },
@@ -225,27 +231,27 @@ const config = {
         },
         links: [
           {
-            title: "Wallet",
+            title: "Conflux",
             items: [
               {
                 label: "Introduction",
-                to: "/wallet",
+                to: "/conflux",
               },
               {
                 label: "Get started",
-                to: "/wallet/category/get-started",
+                to: "/conflux/category/get-started",
               },
               {
                 label: "How to guides",
-                to: "/wallet/category/how-to",
+                to: "/conflux/category/how-to",
               },
               {
                 label: "Tutorials",
-                to: "/wallet/category/tutorials",
+                to: "/conflux/category/tutorials",
               },
               {
                 label: "Reference",
-                to: "/wallet/category/reference",
+                to: "/conflux/category/reference",
               },
             ],
           },
