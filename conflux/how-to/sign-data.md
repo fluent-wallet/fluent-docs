@@ -1,12 +1,12 @@
 ---
-description: Sign data using eth_signTypedData_v4 and personal_sign.
+description: Sign data using cfx_signTypedData_v4 and personal_sign.
 ---
 
 # Sign data
 
 You can use the following RPC methods to request cryptographic signatures from users:
 
-- [`eth_signTypedData_v4`](#use-eth_signtypeddata_v4) - Use this method to request the most human-readable
+- [`cfx_signTypedData_v4`](#use-cfx_signtypeddata_v4) - Use this method to request the most human-readable
   signatures that are efficient to process on-chain.
   We recommend this for most use cases.
 - [`personal_sign`](#use-personal_sign) - Use this method for the easiest way to request human-readable
@@ -14,20 +14,17 @@ You can use the following RPC methods to request cryptographic signatures from u
 
 Read more about [the history of the signing methods](../concepts/signing-methods.md).
 
-:::caution
-[`eth_sign`](../concepts/signing-methods.md#eth_sign) is deprecated.
-:::
 
 :::note
-MetaMask supports signing transactions using Trezor and Ledger hardware wallets.
+Fluent supports signing transactions using  Ledger hardware wallets.
 These wallets only support signing data using `personal_sign`.
-If you can't log in to a dapp when using a Ledger or Trezor, the dapp might be requesting you to
-sign data using an unsupported method, in which case we recommend using your standard MetaMask account.
+If you can't log in to a dapp when using a Ledger, the dapp might be requesting you to
+sign data using an unsupported method, in which case we recommend using your standard Fluent account.
 :::
 
-## Use eth_signTypedData_v4
+## Use cfx_signTypedData_v4
 
-[`eth_signTypedData_v4`](https://metamask.github.io/api-playground/api-documentation/#eth_signTypedData_v4)
+[`cfx_signTypedData_v4`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#cfx_signtypeddata_v4)
 provides the most human-readable signatures that are efficient to process on-chain.
 It follows the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) specification to allow users to sign
 typed structured data that can be verified on-chain.
@@ -40,17 +37,15 @@ account names in place of addresses).
 
 </p>
 
-An `eth_signTypedData_v4` payload uses a standard format of encoding structs, but has a different
+An `cfx_signTypedData_v4` payload uses a standard format of encoding structs, but has a different
 format for the top-level struct that is signed, which includes some metadata about the verifying
 contract to provide replay protection of these signatures between different contract instances.
 
-We recommend using [`eth-sig-util`](https://github.com/MetaMask/eth-sig-util) to generate and
+We recommend using [`js-conflux-sdk`](https://github.com/Conflux-Chain/js-conflux-sdk) to generate and
 validate signatures.
-You can use [`eip712-codegen`](https://github.com/danfinlay/eip712-codegen#readme) to generate most
+You can use [`cip-23`](https://github.com/conflux-fans/cip-23) to generate most
 of the Solidity required to verify these signatures on-chain.
-It currently doesn't generate the top-level struct verification code, so you must write that part manually.
-See
-[this example implementation](https://github.com/delegatable/delegatable-sol/blob/fb34bb259890417285f7185bc6500fb0ab8bf86f/contracts/Delegatable.sol#L80).
+
 
 :::caution
 Since the top-level struct type's name and the `domain.name` are presented to the user prominently
@@ -61,37 +56,51 @@ Ensure your contract is as readable as possible to the user.
 
 ### Example
 
-The following is an example of using `eth_signTypedData_v4` with MetaMask.
-See the [live example](https://metamask.github.io/test-dapp/#signTypedDataV4) and
-[test dapp source code](https://github.com/MetaMask/test-dapp).
+The following is an example of using `cfx_signTypedData_v4` with Fluent.
+See the [live example](https://dapp-demo.fluentwallet.dev/) and
+[test dapp source code](https://github.com/Conflux-Chain/helios/tree/dev/examples/basic-dapp).
 
 <!--tabs-->
 
 # JavaScript
 
 ```javascript
+import { getMessage,publicKeyToAddress } from 'cip-23';
+
 signTypedDataV4Button.addEventListener('click', async function (event) {
   event.preventDefault();
 
-  // eth_signTypedData_v4 parameters. All of these parameters affect the resulting signature.
+  // cfx_signTypedData_v4 parameters. All of these parameters affect the resulting signature.
   const msgParams = JSON.stringify({
-    domain: {
-      // This defines the network, in this case, Mainnet.
-      chainId: 1,
-      // Give a user-friendly name to the specific contract you're signing for.
-      name: 'Ether Mail',
-      // Add a verifying contract to make sure you're establishing contracts with the proper entity.
-      verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-      // This identifies the latest version.
-      version: '1',
+    types: {
+      CIP23Domain: [
+        {name: 'name', type: 'string'},
+        {name: 'version', type: 'string'},
+        {name: 'chainId', type: 'uint256'},
+        {name: 'verifyingContract', type: 'address'},
+      ],
+      Person: [
+        {name: 'name', type: 'string'},
+        {name: 'wallets', type: 'address[]'},
+      ],
+      Mail: [
+        {name: 'from', type: 'Person'},
+        {name: 'to', type: 'Person[]'},
+        {name: 'contents', type: 'string'},
+      ],
+      Group: [
+        {name: 'name', type: 'string'},
+        {name: 'members', type: 'Person[]'},
+      ],
     },
-
-    // This defines the message you're proposing the user to sign, is dapp-specific, and contains
-    // anything you want. There are no required fields. Be as explicit as possible when building out
-    // the message schema.
+    domain: {
+      name: 'Ether Mail',
+      version: '1',
+      chainId: 1,
+      verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+    },
+    primaryType: 'Mail',
     message: {
-      contents: 'Hello, Bob!',
-      attachedMoneyInEth: 4.2,
       from: {
         name: 'Cow',
         wallets: [
@@ -109,62 +118,28 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
           ],
         },
       ],
-    },
-    // This refers to the keys of the following types object.
-    primaryType: 'Mail',
-    types: {
-      // This refers to the domain the contract is hosted on.
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-      ],
-      // Not an EIP712Domain definition.
-      Group: [
-        { name: 'name', type: 'string' },
-        { name: 'members', type: 'Person[]' },
-      ],
-      // Refer to primaryType.
-      Mail: [
-        { name: 'from', type: 'Person' },
-        { name: 'to', type: 'Person[]' },
-        { name: 'contents', type: 'string' },
-      ],
-      // Not an EIP712Domain definition.
-      Person: [
-        { name: 'name', type: 'string' },
-        { name: 'wallets', type: 'address[]' },
-      ],
+      contents: 'Hello, Bob!',
     },
   });
 
-  var from = await web3.eth.getAccounts();
+  const [from] = await provider.request({method: 'cfx_accounts'});
 
-  var params = [from[0], msgParams];
-  var method = 'eth_signTypedData_v4';
+  var params = [from, msgParams];
+  var method = 'cfx_signTypedData_v4';
+  const hash = getMessage(msgParams, true).toString('hex');
 
-  web3.currentProvider.sendAsync(
+  provider.request(
     {
       method,
       params,
-      from: from[0],
-    },
-    function (err, result) {
-      if (err) return console.dir(err);
-      if (result.error) {
-        alert(result.error.message);
-      }
-      if (result.error) return console.error('ERROR', result);
-      console.log('TYPED SIGNED:' + JSON.stringify(result.result));
-
-      const recovered = sigUtil.recoverTypedSignature_v4({
-        data: JSON.parse(msgParams),
-        sig: result.result,
-      });
+    }
+  ).then(result=>{
+      const recovered = sign.ecdsaRecover(
+        hash,result,
+      );
 
       if (
-        ethUtil.toChecksumAddress(recovered) === ethUtil.toChecksumAddress(from)
+        sign.publicKeyToAddress(recovered) === format.hexAddress(from)
       ) {
         alert('Successfully recovered signer as ' + from);
       } else {
@@ -172,8 +147,7 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
           'Failed to verify signer when comparing ' + result + ' to ' + from
         );
       }
-    }
-  );
+  }).catch(error=>console.error(error));
 });
 ```
 
@@ -181,17 +155,16 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
 
 ```html
 <h3>Sign typed data v4</h3>
-<button type="button" id="signTypedDataV4Button">eth_signTypedData_v4</button>
+<button type="button" id="signTypedDataV4Button">cfx_signTypedData_v4</button>
 ```
 
 <!--/tabs-->
 
 ## Use personal_sign
 
-[`personal_sign`](https://metamask.github.io/api-playground/api-documentation/#personal_sign) is the
+[`personal_sign`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#personal_sign) is the
 easiest way to request human-readable signatures that don't need to be efficiently processed on-chain.
-It's often used for signature challenges that are authenticated on a web server, such as
-[Sign-In with Ethereum](https://login.xyz/).
+It's often used for signature challenges that are authenticated on a web server.
 
 <p align="center">
 
@@ -199,10 +172,6 @@ It's often used for signature challenges that are authenticated on a web server,
 
 </p>
 
-Some other signers implement `personal_sign` as `eth_sign`, because the Go Ethereum client changed
-the behavior of their `eth_sign` method.
-Because MetaMask supports existing applications, MetaMask implements both `personal_sign` and `eth_sign`.
-You might need to check what method your supported signers use for a given implementation.
 
 :::caution important
 - Don't use this method to display binary data, because the user wouldn't be able to understand what
@@ -215,9 +184,9 @@ You might need to check what method your supported signers use for a given imple
 
 ### Example
 
-The following is an example of using `personal_sign` with MetaMask.
-See the [live example](https://metamask.github.io/test-dapp/#personalSign) and
-[test dapp source code](https://github.com/MetaMask/test-dapp).
+The following is an example of using `personal_sign` with Fluent.
+See the [live example](https://dapp-demo.fluentwallet.dev/) and
+[test dapp source code](https://github.com/Conflux-Chain/helios/tree/dev/examples/basic-dapp).
 
 <!--tabs-->
 
@@ -228,13 +197,10 @@ personalSignButton.addEventListener('click', async function (event) {
   event.preventDefault();
   const exampleMessage = 'Example `personal_sign` message.';
   try {
-    const from = accounts[0];
-    // For historical reasons, you must submit the message to sign in hex-encoded UTF-8.
-    // This uses a Node.js-style buffer shim in the browser.
-    const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
-    const sign = await ethereum.request({
+    const [from] = await provider.request({method: 'cfx_accounts'});
+    const sign = await provider.request({
       method: 'personal_sign',
-      params: [msg, from, 'Example password'],
+      params: [exampleMessage, from],
     });
     personalSignResult.innerHTML = sign;
     personalSignVerify.disabled = false;
@@ -254,5 +220,3 @@ personalSignButton.addEventListener('click', async function (event) {
 
 <!--/tabs-->
 
-`personal_sign` prepends the message with `\x19Ethereum Signed Message:\n<length of message>` before
-hashing and signing it.

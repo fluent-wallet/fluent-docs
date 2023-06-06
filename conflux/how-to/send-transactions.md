@@ -1,11 +1,11 @@
 ---
-description: Send transactions using eth_sendTransaction.
+description: Send transactions using cfx_sendTransaction.
 ---
 
 # Send transactions
 
-You can send a transaction in MetaMask using the
-[`eth_sendTransaction`](https://ethereum.org/en/developers/docs/apis/json-rpc/#eth_sendtransaction)
+You can send a transaction in Fluent Wallet using the
+[`cfx_sendTransaction`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#cfx_sendtransaction)
 RPC method.
 
 For example, the following JavaScript gets the user's accounts and sends a transaction when they
@@ -16,23 +16,23 @@ select each button, and the following HTML displays the buttons.
 # JavaScript
 
 ```javascript
-const ethereumButton = document.querySelector('.enableEthereumButton');
-const sendEthButton = document.querySelector('.sendEthButton');
+const confluxButton = document.querySelector('.enableConfluxButton');
+const sendCfxButton = document.querySelector('.sendCfxButton');
 
 let accounts = [];
 
-// Send Ethereum to an address
-sendEthButton.addEventListener('click', () => {
-  ethereum
+// Send Conflux to an address
+sendCfxButton.addEventListener('click', () => {
+  conflux
     .request({
-      method: 'eth_sendTransaction',
+      method: 'cfx_sendTransaction',
       params: [
         {
           from: accounts[0], // The user's active address.
-          to: '0x2f318C334780961FB129D2a6c30D0763d9a5C970', // Required except during contract publications.
-          value: '0x29a2241af62c0000', // Only required to send ether to the recipient from the initiating external account.
-          gasPrice: '0x09184e72a000', // Customizable by the user during MetaMask confirmation.
-          gas: '0x2710', // Customizable by the user during MetaMask confirmation.
+          to: 'cfx:aana7ds0dvsxftyanc727snuu6husj3vmyc3f1ay93', // Required except during contract publications.
+          value: '0x1', // Only required to send cfx to the recipient from the initiating external account.
+          gasPrice: '0x7530', // Customizable by the user during Fluent  confirmation.
+          gas: '0x5208', // Customizable by the user during Fluent confirmation.
         },
       ],
     })
@@ -40,20 +40,20 @@ sendEthButton.addEventListener('click', () => {
     .catch((error) => console.error(error));
 });
 
-ethereumButton.addEventListener('click', () => {
+confluxButton.addEventListener('click', () => {
   getAccount();
 });
 
 async function getAccount() {
-  accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+  accounts = await conflux.request({ method: 'cfx_requestAccounts' });
 }
 ```
 
 # HTML
 
 ```html
-<button class="enableEthereumButton btn">Enable Ethereum</button>
-<button class="sendEthButton btn">Send ETH</button>
+<button class="enableConfluxButton btn">Enable Conflux</button>
+<button class="sendCfxButton btn">Send CFX</button>
 ```
 
 <!--/tabs-->
@@ -63,10 +63,10 @@ async function getAccount() {
 ### Nonce
 
 :::note
-MetaMask ignores this field.
+Fluent ignores this field.
 :::
 
-In Ethereum, every transaction has a nonce, so each transaction can only be processed by the
+In Conflux, every transaction has a nonce, so each transaction can only be processed by the
 blockchain once.
 To be a valid transaction, either:
 
@@ -77,35 +77,27 @@ This means that transactions are always processed in order for a given account.
 
 Nonces are easy to mess up, especially when a user is interacting with multiple applications with
 pending transactions using the same account, potentially across multiple devices.
-Because of this, MetaMask doesn't allow dapp developers to customize nonces.
-Instead, MetaMask
-[assists the user in managing their transaction queue themselves](https://metamask.zendesk.com/hc/en-us/articles/360015489251).
+Because of this, Fluent doesn't allow dapp developers to customize nonces.
+
 
 ### Gas price
 
 Gas price is an optional parameter, and best used on private blockchains.
 
-In Ethereum, every transaction specifies a price for the gas it consumes.
+In Conflux, every transaction specifies a price for the gas it consumes.
 To maximize their profit, block producers pick pending transactions with higher gas prices first
 when creating the next block.
 This means that a high gas price usually causes your transaction to be processed faster, at the cost
 of greater transaction fees.
 
-Some networks, such as Layer 2 networks, might have a constant gas price or no gas price.
-So while you can ignore this parameter on MetaMask's default networks, you might include it when
-your dapp knows more about the target network than MetaMask does.
-On the default networks, MetaMask allows users to choose between slow, medium, and fast options for
-their gas price.
-
-Read about [how to use advanced gas controls](https://metamask.zendesk.com/hc/en-us/articles/360022895972).
 
 ### Gas limit
 
-Gas limit is an optional parameter, since MetaMask automatically calculates a reasonable gas price.
+Gas limit is an optional parameter, since Fluent automatically calculates a reasonable gas price.
 
 ### To
 
-The `to` parameter is a hex-encoded Ethereum address.
+The `to` parameter is a base32-encoded Conflux address.
 It's required for transactions with a recipient (all transactions except for contract creation).
 
 Contract creation occurs when there is no `to` value but there is a `data` value.
@@ -113,12 +105,12 @@ Contract creation occurs when there is no `to` value but there is a `data` value
 ### Value
 
 The `value` parameter is a hex-encoded value of the network's native currency to send.
-On Mainnet, this is [ether](https://www.ethereum.org/eth), which is denominated in wei.
+On Mainnet, this is [cfx](https://developer.confluxnetwork.org/introduction/en/conflux_basics#cfx), which is denominated in Drip.
 
 These numbers are often far higher precision than native JavaScript numbers, and can cause
 unpredictable behavior if not anticipated.
 We recommend using [BN.js](https://github.com/indutny/bn.js/) when manipulating
-values intended for Ethereum.
+values intended for Conflux.
 
 ### Data
 
@@ -131,10 +123,12 @@ information on how the data is encoded.
 ### Chain ID
 
 :::note
-MetaMask ignores this field.
+Fluent ignores this field.
 :::
 
-The chain ID is derived from the user's current selected network at `window.ethereum.networkVersion`.
+The chain ID is derived from the user's current selected network at `window.conflux.networkVersion`. Or you can call the `net_version` method using the [`provider.request()`]((../../../reference/provider-api.md#windowconfluxrequestargs))
 
-In the future, MetaMask might allow connecting to multiple networks at the same time, at which point
-this parameter will become important, so it might be useful to be in the habit of including it now.
+```javascript
+conflux.request({ method: 'net_version', params: [] });
+```
+
