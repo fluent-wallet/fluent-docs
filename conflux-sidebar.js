@@ -77,12 +77,9 @@ const sidebar = {
         "how-to/send-transactions",
         "how-to/sign-data",
         "how-to/register-token",
-        "how-to/register-method-names",
-        "how-to/access-provider",
+        // "how-to/access-provider",
         "how-to/secure-dapp",
         "how-to/set-icon",
-        "how-to/use-onboarding-library",
-        "how-to/migrate-api",
       ],
     },
     {
@@ -90,8 +87,7 @@ const sidebar = {
       label: "Concepts",
       link: { type: "generated-index" },
       items: [
-        "concepts/sdk-connections",
-        "concepts/signing-methods",
+        // "concepts/signing-methods",
         "concepts/convenience-libraries",
       ],
     },

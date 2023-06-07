@@ -5,23 +5,8 @@ description: A brief history of the signing RPC methods.
 
 # History of the signing methods
 
-This page describes a brief history of the signing RPC methods in MetaMask.
+This page describes a brief history of the signing RPC methods in Fluent.
 Learn how to [use the recommended signing methods](../how-to/sign-data.md).
-
-### eth_sign
-
-`eth_sign` is MetaMask's original signing method.
-It allows signing an arbitrary hash, which means it can be used to sign transactions, or any other
-data, making it a dangerous phishing risk.
-
-:::caution important
-`eth_sign` is deprecated.
-MetaMask disables this method by default and doesn't recommend using this method in production.
-However, some applications (usually internal administrator panels) use this method for its ease of
-use, or because of an inability to change the associated dapp.
-If a wallet user must interact with a dapp that still uses `eth_sign` and accepts the risks,
-they can still re-enable it through advanced settings.
-:::
 
 ### personal_sign
 
