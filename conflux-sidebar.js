@@ -107,7 +107,7 @@ const sidebar = {
       items: [
         "reference/provider-api",
         "reference/rpc-api",
-        "reference/sdk-js-options",
+        // "reference/sdk-js-options",
       ],
     },
   ],
