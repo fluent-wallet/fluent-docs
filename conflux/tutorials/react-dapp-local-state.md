@@ -544,7 +544,7 @@ add a few utility functions.
 
 Your dapp now displays `account`, `balance`, and `chainId`, represented as hex values and numbers.
 
-![MetaMask address, balance, and chain](../assets/tutorials/react-dapp/pt1-07.png)
+![Conflux address, balance, and chain](../assets/tutorials/react-dapp/pt1-07.png)
 
 Your dapp detects any changes to `balance` or `chain`, and the utility functions format hex strings
 to be human-readable for display.
@@ -704,7 +704,7 @@ Attempt to connect again and choose to cancel the connection:
 
 You'll see the error message displayed on the dapp and in the console:
 
-![MetaMask User Reject Request Error](../assets/tutorials/react-dapp/pt1-10.png)
+![Conflux User Reject Request Error](../assets/tutorials/react-dapp/pt1-10.png)
 
 ## Conclusion
 

@@ -63,7 +63,7 @@ In practice, if a method has parameters, they're almost always of type `Array<an
 If the request fails, the promise rejects with an [error](#errors).
 
 The following is an example of using `window.conflux.request(args)` to call
-[`cfx_sendTransaction`](https://metamask.github.io/api-playground/api-documentation/#eth_sendTransaction):
+[`cfx_sendTransaction`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#cfx_sendtransaction):
 
 ```javascript
 params: [
@@ -121,7 +121,7 @@ window.conflux.on('accountsChanged', handler: (accounts: Array<string>) => void)
 ```
 
 The provider emits this event when the return value of the
-[`cfx_accounts`](https://metamask.github.io/api-playground/api-documentation/#cfx_accounts) RPC
+[`cfx_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#cfx_accounts) RPC
 method changes.
 `cfx_accounts` returns either an empty array, or an array that contains the address of the most
 recently used account the caller is permitted to access.

@@ -1,6 +1,6 @@
 # Use JS-CONFLUX-SDK  with JavaScript
 
-You can import JS-CONFLUX-SDKinto your JavaScript dapp to enable your users to easily connect
+You can import JS-CONFLUX-SDK into your JavaScript dapp to enable your users to easily connect
 with a Fluent wallet client.
 The following instructions work for web dapps based on standard JavaScript.
 You can also see instructions for the following JavaScript-based platforms:

@@ -25,7 +25,7 @@ try {
   const wasAdded = await conflux.request({
     method: 'wallet_watchAsset',
     params: {
-      type: 'ERC20', // Initially only supports CRC-20 tokens, but eventually more!
+      type: 'CRC20', // Initially only supports CRC-20 tokens, but eventually more!
       options: {
         address: tokenAddress, // The address of the token.
         symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 characters.

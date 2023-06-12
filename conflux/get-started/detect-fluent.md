@@ -21,16 +21,16 @@ To differentiate Fluent from other Conflux-compatible browsers, you can detect F
 [`window.conflux.isFluent`](../reference/provider-api.md#windowconfluxisfluent) property.
 :::
 
-## Use @cfxjs/use-wallet-react/conflux
+## Use @fluent-wallet/detect-provider
 
-We recommend using the [`@cfxjs/use-wallet-react/conflux`](https://github.com/Conflux-Chain/use-wallet)
+We recommend using the [`@fluent-wallet/detect-provider`](https://github.com/fluent-wallet/detect-provider)
 module to detect the Fluent Conflux provider on any platform or browser.
 
 Use [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install
 `@cfxjs/use-wallet-react/conflux` in your project directory:
 
 ```bash
-npm i @cfxjs/use-wallet-react/conflux
+npm i @fluent-wallet/detect-provider
 ```
 
 In the [example project script](set-up-dev-environment.md#example), the following code detects the
@@ -38,7 +38,11 @@ provider using `@cfxjs/use-wallet-react/conflux`:
 
 ```javascript title="index.js"
 // This function detects most providers injected at window.conflux.This returns the provider, or null if it wasn't detected.
-import { provider } from '@cfxjs/use-wallet-react/conflux';
+import detectProvider from "@fluent-wallet/detect-provider";
+const provider = await detectProvider({
+        injectFlag: "conflux",
+        defaultWalletFlag: "isFluent",
+});
 
 if (provider) {
   // From now on, this should always be true:
