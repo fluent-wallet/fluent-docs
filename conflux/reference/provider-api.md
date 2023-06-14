@@ -162,13 +162,13 @@ window.conflux.on('connect', handler: (connectInfo: ConnectInfo) => void);
 
 The provider emits this event when it's first able to submit RPC requests to a chain.
 We recommend listening to this event and using the
-[`window.conflux.isConnected()`](#windowethereumisconnected) provider method to determine when
+[`window.conflux.isConnected()`](#windowconfluxisconnected) provider method to determine when
 the provider is connected.
 
 ### disconnect
 
 ```typescript
-ethereum.on('disconnect', handler: (error: ProviderRpcError) => void);
+conflux.on('disconnect', handler: (error: ProviderRpcError) => void);
 ```
 
 The provider emits this event if it becomes unable to submit RPC requests to a chain.
@@ -176,7 +176,7 @@ In general, this only happens due to network connectivity issues or some unfores
 
 When the provider emits this event, it doesn't accept new requests until the connection to the chain
 is re-established, which requires reloading the page.
-You can also use the [`window.conflux.isConnected()`](#windowethereumisconnected) provider method
+You can also use the [`window.conflux.isConnected()`](#windowconfluxisconnected) provider method
 to determine if the provider is disconnected.
 
 ### message
@@ -206,7 +206,7 @@ interface ProviderRpcError extends Error {
 }
 ```
 
-The [`window.conflux.request(args)`](#windowethereumrequestargs) provider method throws errors
+The [`window.conflux.request(args)`](#windowconfluxrequestargs) provider method throws errors
 eagerly.
 You can use the error `code` property to determine why the request failed.
 Common codes and their meaning include:

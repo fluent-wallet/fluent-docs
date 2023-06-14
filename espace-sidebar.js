@@ -12,7 +12,7 @@ const sidebar = {
       items: [
         "get-started/set-up-dev-environment",
         // "get-started/run-development-network",
-        "get-started/detect-metamask",
+        "get-started/detect-fluent",
         "get-started/detect-network",
         "get-started/access-accounts",
       ],
@@ -24,7 +24,7 @@ const sidebar = {
       items: [
         {
           type: "category",
-          label: "Use MetaMask SDK",
+          label: "Use JS-CONFLUX-SDK",
           link: {
             type: "doc",
             id: "how-to/use-sdk/index",
@@ -41,48 +41,16 @@ const sidebar = {
                 "how-to/use-sdk/javascript/react",
                 "how-to/use-sdk/javascript/pure-js",
                 "how-to/use-sdk/javascript/other-web-frameworks",
-                "how-to/use-sdk/javascript/react-native",
-                "how-to/use-sdk/javascript/nodejs",
-                "how-to/use-sdk/javascript/electron",
-              ],
-            },
-            {
-              type: "category",
-              label: "Mobile",
-              link: {
-                type: "doc",
-                id: "how-to/use-sdk/mobile/index",
-              },
-              items: [
-                "how-to/use-sdk/mobile/ios",
-                "how-to/use-sdk/mobile/android",
-              ],
-            },
-            {
-              type: "category",
-              label: "Gaming",
-              link: {
-                type: "doc",
-                id: "how-to/use-sdk/gaming/index",
-              },
-              items: [
-                "how-to/use-sdk/gaming/unity",
-                "how-to/use-sdk/gaming/unreal-engine",
               ],
             },
           ],
         },
-        "how-to/use-mobile",
         "how-to/interact-with-smart-contracts",
         "how-to/send-transactions",
         "how-to/sign-data",
         "how-to/register-token",
-        "how-to/register-method-names",
-        "how-to/access-provider",
         "how-to/secure-dapp",
         "how-to/set-icon",
-        "how-to/use-onboarding-library",
-        "how-to/migrate-api",
       ],
     },
     {
@@ -90,8 +58,6 @@ const sidebar = {
       label: "Concepts",
       link: { type: "generated-index" },
       items: [
-        "concepts/sdk-connections",
-        "concepts/signing-methods",
         "concepts/convenience-libraries",
       ],
     },
@@ -111,7 +77,6 @@ const sidebar = {
       items: [
         "reference/provider-api",
         "reference/rpc-api",
-        "reference/sdk-js-options",
       ],
     },
   ],

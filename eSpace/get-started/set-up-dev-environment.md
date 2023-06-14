@@ -4,7 +4,7 @@ description: Set up a new simple dapp to integrate with Fluent.
 
 # Set up your development environment
 
-You can easily set up a simple dapp to integrate with MetaMask.
+You can easily set up a simple dapp to integrate with Fluent.
 For a full end-to-end tutorial using [Vite](https://v3.vitejs.dev/guide/), see the
 [Create a simple React dapp](../tutorials/react-dapp-local-state.md) tutorial.
 
@@ -35,22 +35,18 @@ simple-dapp/
 
 For any Conflux dapp to work, your project script `index.js` must:
 
-- [Detect the Ethereum provider.](detect-metamask.md)
-- [Detect which Ethereum network the user is connected to.](detect-network.md)
-- [Access the user's Ethereum accounts.](access-accounts.md)
+- [Detect the Fluent provider.](detect-fluent)
+- [Detect which Conflux eSpace network the user is connected to.](detect-network)
+- [Access the user's Conflux accounts.](access-accounts)
 
 :::caution important
 If you import any modules into your project, such as
-[`@metamask/detect-provider`](https://github.com/MetaMask/detect-provider), use a bundler such as
+[`@fluent-wallet/detect-provider`](https://github.com/fluent-wallet/detect-provider), use a bundler such as
 [Webpack](https://github.com/webpack/webpack) to compile the modules and create an output script
 `dist/main.js`.
 See [Webpack's Getting Started guide](https://webpack.js.org/guides/getting-started/) for more information.
 :::
 
-:::tip
-We also recommend [importing MetaMask SDK](../how-to/use-sdk/index.md) to enable a reliable, secure,
-and seamless connection from your dapp to a MetaMask wallet client.
-:::
 
 ## Example
 
@@ -62,17 +58,19 @@ The following is an example simple dapp script and HTML file:
 
 ```javascript title="index.js"
 /*****************************************/
-/* Detect the MetaMask Ethereum provider */
+/* Detect the Fluent Conflux provider */
 /*****************************************/
 
-import detectEthereumProvider from '@metamask/detect-provider';
-
-const provider = await detectEthereumProvider();
+import detectProvider from "@fluent-wallet/detect-provider";
+const provider = await detectProvider({
+        injectFlag: "ethereum",
+        defaultWalletFlag: "isFluent",
+});
 
 if (provider) {
   startApp(provider);
 } else {
-  console.log('Please install MetaMask!');
+  console.log('Please install Fluent Wallet!');
 }
 
 function startApp(provider) {
@@ -108,7 +106,7 @@ window.ethereum.on('accountsChanged', handleAccountsChanged);
 
 function handleAccountsChanged(accounts) {
   if (accounts.length === 0) {
-    console.log('Please connect to MetaMask.');
+    console.log('Please connect to Fluent Wallet.');
   } else if (accounts[0] !== currentAccount) {
     currentAccount = accounts[0];
     showAccount.innerHTML = currentAccount;
@@ -130,7 +128,7 @@ async function getAccount() {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
     .catch((err) => {
       if (err.code === 4001) {
-        console.log('Please connect to MetaMask.');
+        console.log('Please connect to Fluent Wallet.');
       } else {
         console.error(err);
       }
@@ -149,11 +147,11 @@ async function getAccount() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Simple dapp</title>
-  <script type="module" src="main.js"></script>
+  <script type="module" src="index.js"></script>
 </head>
 <body>
   <!-- Display a connect button and the current account -->
-  <button class="enableEthereumButton">Enable Ethereum</button>
+  <button class="enableEthereumButton">Enable Conflux eSpace</button>
   <h2>Account: <span class="showAccount"></span></h2>
 </body>
 </html>

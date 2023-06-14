@@ -1,21 +1,20 @@
 ---
-description: Fluent Conflux JSON-RPC API reference
+description: Fluent Ethereum JSON-RPC API reference
 ---
 
 # JSON-RPC API
 
-Fluent uses the [`window.conflux.request(args)`](provider-api.md#windowconfluxrequestargs)
+Fluent uses the [`window.ethereum.request(args)`](provider-api.md#windowethereumrequestargs)
 provider method to wrap a JSON-RPC API.
-The API contains standard Conflux JSON-RPC API methods and Fluent-specific methods.
+The API contains standard Ethereum JSON-RPC API methods and Fluent-specific methods.
 
-
-For more information on the standard Conflux RPC methods, see the
-[Conflux RPC Methods](https://developer.confluxnetwork.org/conflux-doc/docs/json_rpc#json-rpc-methods).
+For more information on the standard Conflux eSpace RPC methods, see the
+[Conflux eSpace Methods](https://developer.confluxnetwork.org/conflux-doc/docs/EVM-Space/evm_space_rpc_compatibility).
 
 :::note
 All RPC method requests can return errors.
 Make sure to handle errors for every call to
-[`window.conflux.request(args)`](provider-api.md#windowconfluxrequestargs).
+[`window.ethereum.request(args)`](provider-api.md#windowethereumrequestargs).
 :::
 
 ## Restricted methods
@@ -27,34 +26,33 @@ If a method is restricted, a dapp must request permission to call it using
 Under the hood, permissions are plain, JSON-compatible objects, with fields that are mostly used
 internally by Fluent.
 
-
 ## Unrestricted methods
 
 Unrestricted methods have no corresponding permission, but they might still rely on permissions to
 succeed (for example, the signing methods require calling the restricted
-[`cfx_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_accounts) method),
+[`eth_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#eth_accounts) method),
 or they might require confirmation by the user (for example,
-[`wallet_addConfluxChain`](#wallet_addconfluxchain)).
+[`wallet_addEthereumChain`](#wallet_addethereumchain)).
 
 The following are some Fluent-specific unrestricted methods.
 For the full list of Fluent JSON-RPC API methods, see the
 [Fluent API](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc).
 
-### cfx_requestAccounts
+### eth_requestAccounts
 
-Requests that the user provide an Conflux address to be identified by.
+Requests that the user provide an Ethereum address to be identified by.
 Use this method to [access a user's accounts](../get-started/access-accounts.md).
 
 This method is specified by [EIP-1102](https://eips.ethereum.org/EIPS/eip-1102).
 
 :::info
 Internally, this method calls [`wallet_requestPermissions`](#wallet_requestpermissions) for
-permission to call [`cfx_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_accounts).
+permission to call [`eth_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc/#eth_accounts).
 :::
 
 #### Returns
 
-If the user accepts the request, this method returns an array of a single Conflux
+If the user accepts the request, this method returns an array of a single, hexadecimal Ethereum
 address string.
 If they reject the request, this method rejects with a `4001` error.
 
@@ -65,12 +63,12 @@ document.getElementById('connectButton', connect);
 
 function connect() {
   ethereum
-    .request({ method: 'cfx_requestAccounts' })
+    .request({ method: 'eth_requestAccounts' })
     .then(handleAccountsChanged)
     .catch((error) => {
       if (error.code === 4001) {
         // EIP-1193 userRejectedRequest error
-        console.log('Please connect to Fluent .');
+        console.log('Please connect to Fluent.');
       } else {
         console.error(error);
       }
@@ -81,6 +79,10 @@ function connect() {
 ### wallet_getPermissions
 
 Gets the caller's current [permissions](#restricted-methods).
+
+:::note
+This method is not yet available on Fluent Mobile.
+:::
 
 #### Returns
 
@@ -94,6 +96,9 @@ Requests [permissions](#restricted-methods) from the user.
 The request causes a Fluent popup to appear.
 You should only request permissions in response to a direct user action, such as a button click.
 
+:::note
+This method is not yet available on Fluent Mobile.
+:::
 
 #### Parameters
 
@@ -113,14 +118,14 @@ function requestPermissions() {
   ethereum
     .request({
       method: 'wallet_requestPermissions',
-      params: [{ cfx_accounts: {} }],
+      params: [{ eth_accounts: {} }],
     })
     .then((permissions) => {
       const accountsPermission = permissions.find(
-        (permission) => permission.parentCapability === 'cfx_accounts'
+        (permission) => permission.parentCapability === 'eth_accounts'
       );
       if (accountsPermission) {
-        console.log('cfx_accounts permission successfully requested!');
+        console.log('eth_accounts permission successfully requested!');
       }
     })
     .catch((error) => {
@@ -134,7 +139,7 @@ function requestPermissions() {
 }
 ```
 
-### wallet_addConfluxChain
+### wallet_addEthereumChain
 
 Creates a confirmation asking the user to add the specified chain to Fluent.
 The user may choose to switch to the chain once it has been added.
@@ -151,14 +156,14 @@ Fluent also rejects the request if any of the following occurs:
   If you use an origin allowlist, they're blocked.
   :::
 - The RPC endpoint returns a different chain ID when
-  [`cfx_chainId`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#cfx_chainid) is called.
+  [eth_chainId](https://conflux-chain.github.io/fluent-wallet-doc/docs/standard-rpc#eth_chainid) is called.
 - The chain ID corresponds to any default Fluent chains.
 
 This method is specified by [EIP-3085](https://eips.ethereum.org/EIPS/eip-3085).
 
 #### Parameters
 
-An array containing an object containing the following metadata about the chain to be added to Fluent :
+An array containing an object containing the following metadata about the chain to be added to Fluent:
 
 - `chainId` - The chain ID as a `0x`-prefixed hexadecimal string.
 - `chainName` - The name of the chain.
@@ -179,12 +184,12 @@ An array containing an object containing the following metadata about the chain 
 
 #### Example
 
-We recommend using this method with [`wallet_addConfluxChain`](#wallet_addconfluxchain):
+We recommend using this method with [`wallet_addEthereumChain`](#wallet_addethereumchain):
 
 ```javascript
 try {
   await ethereum.request({
-    method: 'wallet_switchConfluxChain',
+    method: 'wallet_switchEthereumChain',
     params: [{ chainId: '0xf00' }],
   });
 } catch (switchError) {
@@ -192,7 +197,7 @@ try {
   if (switchError.code === 4902) {
     try {
       await ethereum.request({
-        method: 'wallet_addConfluxChain',
+        method: 'wallet_addEthereumChain',
         params: [
           {
             chainId: '0xf00',
@@ -209,7 +214,7 @@ try {
 }
 ```
 
-### wallet_switchConfluxChain
+### wallet_switchEthereumChain
 
 Creates a confirmation asking the user to switch to the chain with the specified chain ID.
 
@@ -231,17 +236,18 @@ An array containing an object containing `chainId`, the chain ID as a `0x`-prefi
 `null` if the request was successful, and an error otherwise.
 
 If the error code is `4902`, the requested chain hasn't been added by Fluent, and you must request
-to add it using [`wallet_addConfluxChain`](#wallet_addconfluxchain).
+to add it using [`wallet_addEthereumChain`](#wallet_addethereumchain).
 
 #### Example
 
-See the [`wallet_addConfluxChain`](#wallet_addconfluxchain) example.
+See the [`wallet_addEthereumChain`](#wallet_addethereumchain) example.
+
 
 ### wallet_watchAsset
 
-Requests that the user track the specified token in Fluent .
+Requests that the user track the specified token in Fluent.
 
-Most Conflux wallets support some set of tokens, usually from a centrally curated registry of tokens.
+Most Ethereum wallets support some set of tokens, usually from a centrally curated registry of tokens.
 This method enables dapp developers to ask their users to track tokens in their wallets, at runtime.
 Once added, the token is indistinguishable from those added using legacy methods, such as a
 centralized registry.
@@ -252,7 +258,7 @@ This method is specified by [EIP-747](https://eips.ethereum.org/EIPS/eip-747).
 
 An object containing the following metadata of the token to watch:
 
-- `type` - Currently only supports `CRC20`.
+- `type` - Currently only supports `ERC20`.
 - `options` - An object containing:
   - `address` - The address of the token contract.
   - `symbol` - The symbol of the token, up to 11 characters.
@@ -270,21 +276,22 @@ ethereum
   .request({
     method: 'wallet_watchAsset',
     params: {
-      type: 'CRC20',
+      type: 'ERC20',
       options: {
-        address: 'cfx:acdrf821t59y12b4guyzckyuw2xf1gfpj2ba0x4sj6',
-        symbol: 'cETH',
+        address: '0xb60e8dd61c5d32be8058bb8eb970870f07233155',
+        symbol: 'FOO',
         decimals: 18,
-        image: 'https://scan-icons.oss-cn-hongkong.aliyuncs.com/mainnet/cfx%3Aacdrf821t59y12b4guyzckyuw2xf1gfpj2ba0x4sj6.png',
+        image: 'https://foo.io/token-image.svg',
       },
     },
   })
   .then((success) => {
     if (success) {
-      console.log('cETH successfully added to wallet!');
+      console.log('FOO successfully added to wallet!');
     } else {
       throw new Error('Something went wrong.');
     }
   })
   .catch(console.error);
 ```
+

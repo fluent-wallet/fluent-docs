@@ -1,59 +1,58 @@
 ---
-description: Detect the MetaMask Ethereum provider object.
+description: Detect the Fluent Conflux provider object.
 ---
 
-# Detect MetaMask
+# Detect Fluent
 
-The presence of the MetaMask Ethereum provider object, `window.ethereum`, in a user's browser
-indicates an Ethereum user.
+The presence of the Fluent Conflux provider object, `window.ethereum`, in a user's browser
+indicates an Conflux user.
 
-To demonstrate this, verify if your browser is running MetaMask by copying and pasting the following
+To demonstrate this, verify if your browser is running Fluent by copying and pasting the following
 code snippet in the developer console of your browser:
 
 ```javascript
 if (typeof window.ethereum !== 'undefined') {
-  console.log('MetaMask is installed!');
+  console.log('Fluent Wallet is installed!');
 }
 ```
 
 :::tip
-To differentiate MetaMask from other Ethereum-compatible browsers, you can detect MetaMask using the
-[`window.ethereum.isMetaMask`](../reference/provider-api.md#windowethereumismetamask) property.
+To differentiate Fluent from other Ethereum-compatible browsers, you can detect Fluent using the
+[`window.ethereum.isFluent`](../reference/provider-api.md#windowconfluxisfluent) property.
 :::
 
-## Use @metamask/detect-provider
+## Use @fluent-wallet/detect-provider
 
-We recommend using the [`@metamask/detect-provider`](https://github.com/MetaMask/detect-provider)
-module to detect the MetaMask Ethereum provider on any platform or browser.
+We recommend using the [`@fluent-wallet/detect-provider`](https://github.com/fluent-wallet/detect-provider)
+module to detect the Fluent Conflux provider on any platform or browser.
 
 Use [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install
-`@metamask/detect-provider` in your project directory:
+`@fluent-wallet/detect-provider` in your project directory:
 
 ```bash
-npm i @metamask/detect-provider
+npm i @fluent-wallet/detect-provider
 ```
 
 In the [example project script](set-up-dev-environment.md#example), the following code detects the
-provider using `@metamask/detect-provider`:
+provider using `@fluent-wallet/detect-provider`:
 
 ```javascript title="index.js"
-// This function detects most providers injected at window.ethereum.
-import detectEthereumProvider from '@metamask/detect-provider';
-
-// This returns the provider, or null if it wasn't detected.
-const provider = await detectEthereumProvider();
+// This function detects most providers injected at window.ethereum.This returns the provider, or null if it wasn't detected.
+import detectProvider from "@fluent-wallet/detect-provider";
+const provider = await detectProvider({
+        injectFlag: "conflux",
+        defaultWalletFlag: "isFluent",
+});
 
 if (provider) {
   // From now on, this should always be true:
   // provider === window.ethereum
   startApp(provider); // initialize your app
 } else {
-  console.log('Please install MetaMask!');
+  console.log('Please install Fluent Wallet!');
 }
 
 function startApp(provider) {
-  // If the provider returned by detectEthereumProvider isn't the same as
-  // window.ethereum, something is overwriting it – perhaps another wallet.
   if (provider !== window.ethereum) {
     console.error('Do you have multiple wallets installed?');
   }

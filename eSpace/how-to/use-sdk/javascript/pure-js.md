@@ -2,10 +2,10 @@
 title: Pure JavaScript
 ---
 
-# Use MetaMask SDK with pure JavaScript
+# Use  JS-CONFLUX-SDK with pure JavaScript
 
-You can import MetaMask SDK into your pure JavaScript dapp to enable your users to easily connect
-with a MetaMask wallet client.
+You can import JS-CONFLUX-SDK into your pure JavaScript dapp to enable your users to easily connect
+with a Fluent wallet client.
 The SDK for pure JavaScript [works the same way](index.md#how-it-works) and has the
 [same prerequisites](index.md#prerequisites) as for standard JavaScript.
 
@@ -15,15 +15,15 @@ To import, instantiate, and use the SDK, you can insert a script in the head sec
 <head>
 ...
 
-<script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-conflux-sdk/dist/js-conflux-sdk.umd.min.js"></script>
 
 <script>
 
-    const MMSDK = new MetaMaskSDK()
+    const conflux = new window.TreeGraph.Conflux();
 
-    const ethereum = MMSDK.getProvider() // You can also access via window.ethereum
+    cfxClient.provider=ethereum;// Actually,it is the window.ethereum injected by Fluent Wallet. You can also access via window.ethereum
 
-    ethereum.request({method: 'eth_requestAccounts'})
+    ethereum.on('chainChanged', cfxClient.updateNetworkId); 
 
 </script>
 
@@ -34,5 +34,5 @@ To import, instantiate, and use the SDK, you can insert a script in the head sec
 You can configure the SDK using any [options](../../../reference/sdk-js-options.md) and call any
 [provider API methods](../../../reference/provider-api.md).
 Always call [`eth_requestAccounts`](../../../reference/rpc-api.md#eth_requestaccounts) using
-[`ethereum.request(args)`](../../../reference/provider-api.md#windowethereumrequestargs) first,
-since it prompts the installation or connection popup to appear.
+[`provider.request()`](../../../reference/provider-api.md#windowethereumrequestargs) first, since it
+prompts the installation or connection popup to appear.

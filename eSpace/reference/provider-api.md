@@ -1,12 +1,12 @@
 ---
-description: Fluent Conflux provider API reference
+description: Fluent Ethereum provider API reference
 ---
 
-# Conflux provider API
+# Ethereum provider API
 
 Fluent injects a global JavaScript API into websites visited by its users using the
-`window.conflux` provider object.
-This API allows websites to request users' Conflux accounts, read data from blockchains the user is
+`window.ethereum` provider object.
+This API allows websites to request users' EVM-based chain(Conflux eSpace) accounts, read data from blockchains the user is
 connected to, and suggest that the user sign messages and transactions.
 
 You can use the provider [properties](#properties), [methods](#methods), and [events](#events) in
@@ -15,7 +15,7 @@ Get started by [setting up your development environment](../get-started/set-up-d
 
 ## Properties
 
-### window.conflux.isFluent
+### window.ethereum.isFluent
 
 This property is `true` if the user has Fluent installed.
 
@@ -26,10 +26,10 @@ Non-Fluent providers may also set this property to `true`.
 
 ## Methods
 
-### window.conflux.isConnected()
+### window.ethereum.isConnected()
 
 ```typescript
-window.conflux.isConnected(): boolean;
+window.ethereum.isConnected(): boolean;
 ```
 
 Returns `true` if the provider is connected to the current chain.
@@ -43,7 +43,7 @@ In the provider interface, "connected" and "disconnected" refer to whether the p
 requests to the current chain.
 :::
 
-### window.conflux.request(args)
+### window.ethereum.request(args)
 
 ```typescript
 interface RequestArguments {
@@ -51,10 +51,10 @@ interface RequestArguments {
   params?: unknown[] | object;
 }
 
-window.conflux.request(args: RequestArguments): Promise<unknown>;
+window.ethereum.request(args: RequestArguments): Promise<unknown>;
 ```
 
-Use this method to submit [RPC API](rpc-api.md) requests to Conflux using Fluent Wallet.
+Use this method to submit [RPC API](rpc-api.md) requests to Ethereum using Fluent.
 It returns a promise that resolves to the result of the RPC method call.
 
 The parameters and return value vary by RPC method.
@@ -62,24 +62,25 @@ In practice, if a method has parameters, they're almost always of type `Array<an
 
 If the request fails, the promise rejects with an [error](#errors).
 
-The following is an example of using `window.conflux.request(args)` to call
-[`cfx_sendTransaction`](https://metamask.github.io/api-playground/api-documentation/#eth_sendTransaction):
+The following is an example of using `window.ethereum.request(args)` to call
+`eth_sendTransaction`:
 
 ```javascript
 params: [
   {
-    from: 'cfx:aana7ds0dvsxftyanc727snuu6husj3vmyc3f1ay93',
-    to: 'cfx:aana7ds0dvsxftyanc727snuu6husj3vmyc3f1ay93',
-    gas: '0x5208', // 21000
-    gasPrice: '0x7530', // 30000
-    value: '0x1'
+    from: '0xb60e8dd61c5d32be8058bb8eb970870f07233155',
+    to: '0xd46e8dd67c5d32be8058bb8eb970870f07244567',
+    gas: '0x76c0', // 30400
+    gasPrice: '0x9184e72a000', // 10000000000000
+    value: '0x9184e72a', // 2441406250
+    data:
+      '0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675',
   },
 ];
 
-
-window.conflux
+window.ethereum
   .request({
-    method: 'cfx_sendTransaction',
+    method: 'eth_sendTransaction',
     params,
   })
   .then((result) => {
@@ -90,6 +91,7 @@ window.conflux
     // If the request fails, the Promise rejects with an error.
   });
 ```
+
 
 ## Events
 
@@ -104,26 +106,26 @@ function handleAccountsChanged(accounts) {
   // Handle new accounts, or lack thereof.
 }
 
-window.conflux.on('accountsChanged', handleAccountsChanged);
+window.ethereum.on('accountsChanged', handleAccountsChanged);
 
 // Later
 
-window.conflux.removeListener('accountsChanged', handleAccountsChanged);
+window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
 ```
 
-The first argument of `window.conflux.removeListener` is the event name, and the second argument is
-a reference to the function passed to `window.conflux.on` for the event.
+The first argument of `window.ethereum.removeListener` is the event name, and the second argument is
+a reference to the function passed to `window.ethereum.on` for the event.
 
 ### accountsChanged
 
 ```typescript
-window.conflux.on('accountsChanged', handler: (accounts: Array<string>) => void);
+window.ethereum.on('accountsChanged', handler: (accounts: Array<string>) => void);
 ```
 
 The provider emits this event when the return value of the
-[`cfx_accounts`](https://metamask.github.io/api-playground/api-documentation/#cfx_accounts) RPC
+[`eth_accounts`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#eth_accounts) RPC
 method changes.
-`cfx_accounts` returns either an empty array, or an array that contains the address of the most
+`eth_accounts` returns either an empty array, or an array that contains the address of the most
 recently used account the caller is permitted to access.
 Callers are identified by their URL origin, which means that all sites with the same origin share
 the same permissions.
@@ -134,7 +136,7 @@ Listen to this event to [handle accounts](../get-started/access-accounts.md#hand
 ### chainChanged
 
 ```typescript
-window.conflux.on('chainChanged', handler: (chainId: string) => void);
+window.ethereum.on('chainChanged', handler: (chainId: string) => void);
 ```
 
 The provider emits this event when the currently connected chain changes.
@@ -145,7 +147,7 @@ Listen to this event to [detect a user's network](../get-started/detect-network.
 We strongly recommend reloading the page upon chain changes, unless you have a good reason not to:
 
 ```javascript
-window.conflux.on('chainChanged', (chainId) => window.location.reload());
+window.ethereum.on('chainChanged', (chainId) => window.location.reload());
 ```
 
 :::
@@ -157,12 +159,12 @@ interface ConnectInfo {
   chainId: string;
 }
 
-window.conflux.on('connect', handler: (connectInfo: ConnectInfo) => void);
+window.ethereum.on('connect', handler: (connectInfo: ConnectInfo) => void);
 ```
 
 The provider emits this event when it's first able to submit RPC requests to a chain.
 We recommend listening to this event and using the
-[`window.conflux.isConnected()`](#windowethereumisconnected) provider method to determine when
+[`window.ethereum.isConnected()`](#windowethereumisconnected) provider method to determine when
 the provider is connected.
 
 ### disconnect
@@ -176,7 +178,7 @@ In general, this only happens due to network connectivity issues or some unfores
 
 When the provider emits this event, it doesn't accept new requests until the connection to the chain
 is re-established, which requires reloading the page.
-You can also use the [`window.conflux.isConnected()`](#windowethereumisconnected) provider method
+You can also use the [`window.ethereum.isConnected()`](#windowethereumisconnected) provider method
 to determine if the provider is disconnected.
 
 ### message
@@ -187,12 +189,16 @@ interface ProviderMessage {
   data: unknown;
 }
 
-window.conflux.on('message', handler: (message: ProviderMessage) => void);
+window.ethereum.on('message', handler: (message: ProviderMessage) => void);
 ```
 
 The provider emits this event when it receives a message that the user should be notified of.
 The `type` property identifies the kind of message.
 
+RPC subscription updates are a common use case for this event.
+For example, if you create a subscription using
+`eth_subscribe`, each
+subscription update is emitted as a `message` event with a `type` of `eth_subscription`.
 
 ## Errors
 
@@ -206,7 +212,7 @@ interface ProviderRpcError extends Error {
 }
 ```
 
-The [`window.conflux.request(args)`](#windowethereumrequestargs) provider method throws errors
+The [`window.ethereum.request(args)`](#windowethereumrequestargs) provider method throws errors
 eagerly.
 You can use the error `code` property to determine why the request failed.
 Common codes and their meaning include:

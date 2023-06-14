@@ -34,5 +34,5 @@ Consult [ConfluxNetwork Developer Doc](https://developer.confluxnetwork.org/intr
 | Hex      | Decimal  | Network                                                                   |
 |----------|----------|---------------------------------------------------------------------------|
 | 0x405    | 1029     | Conflux main network (Mainnet)                                            |
-| 0x1      | 1        | Test network                                                              |   
+| 0x1      | 1        | Testnet network                                                              |   
 

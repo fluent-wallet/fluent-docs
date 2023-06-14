@@ -14,20 +14,16 @@ You can use the following RPC methods to request cryptographic signatures from u
 
 Read more about [the history of the signing methods](../concepts/signing-methods.md).
 
-:::caution
-[`eth_sign`](../concepts/signing-methods.md#eth_sign) is deprecated.
-:::
-
 :::note
-MetaMask supports signing transactions using Trezor and Ledger hardware wallets.
+Fluent supports signing transactions using  Ledger hardware wallets.
 These wallets only support signing data using `personal_sign`.
-If you can't log in to a dapp when using a Ledger or Trezor, the dapp might be requesting you to
-sign data using an unsupported method, in which case we recommend using your standard MetaMask account.
+If you can't log in to a dapp when using a Ledger, the dapp might be requesting you to
+sign data using an unsupported method, in which case we recommend using your standard Fluent account.
 :::
 
 ## Use eth_signTypedData_v4
 
-[`eth_signTypedData_v4`](https://metamask.github.io/api-playground/api-documentation/#eth_signTypedData_v4)
+[`eth_signTypedData_v4`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#eth_signtypeddata_v4)
 provides the most human-readable signatures that are efficient to process on-chain.
 It follows the [EIP-712](https://eips.ethereum.org/EIPS/eip-712) specification to allow users to sign
 typed structured data that can be verified on-chain.
@@ -44,7 +40,7 @@ An `eth_signTypedData_v4` payload uses a standard format of encoding structs, bu
 format for the top-level struct that is signed, which includes some metadata about the verifying
 contract to provide replay protection of these signatures between different contract instances.
 
-We recommend using [`eth-sig-util`](https://github.com/MetaMask/eth-sig-util) to generate and
+We recommend using [`eth-sig-util`](https://github.com/metamask/eth-sig-util) to generate and
 validate signatures.
 You can use [`eip712-codegen`](https://github.com/danfinlay/eip712-codegen#readme) to generate most
 of the Solidity required to verify these signatures on-chain.
@@ -61,9 +57,9 @@ Ensure your contract is as readable as possible to the user.
 
 ### Example
 
-The following is an example of using `eth_signTypedData_v4` with MetaMask.
+The following is an example of using `eth_signTypedData_v4` with Fluent.
 See the [live example](https://metamask.github.io/test-dapp/#signTypedDataV4) and
-[test dapp source code](https://github.com/MetaMask/test-dapp).
+[test dapp source code](https://github.com/metamask/test-dapp).
 
 <!--tabs-->
 
@@ -139,12 +135,12 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
     },
   });
 
-  var from = await web3.eth.getAccounts();
+  const [from] = await provider.request({method: 'cfx_accounts'});
 
   var params = [from[0], msgParams];
   var method = 'eth_signTypedData_v4';
 
-  web3.currentProvider.sendAsync(
+  provider.sendAsync(
     {
       method,
       params,
@@ -188,10 +184,9 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
 
 ## Use personal_sign
 
-[`personal_sign`](https://metamask.github.io/api-playground/api-documentation/#personal_sign) is the
+[`personal_sign`](https://conflux-chain.github.io/fluent-wallet-doc/docs/provider-rpc#personal_sign) is the
 easiest way to request human-readable signatures that don't need to be efficiently processed on-chain.
-It's often used for signature challenges that are authenticated on a web server, such as
-[Sign-In with Ethereum](https://login.xyz/).
+It's often used for signature challenges that are authenticated on a web server.
 
 <p align="center">
 
@@ -201,7 +196,7 @@ It's often used for signature challenges that are authenticated on a web server,
 
 Some other signers implement `personal_sign` as `eth_sign`, because the Go Ethereum client changed
 the behavior of their `eth_sign` method.
-Because MetaMask supports existing applications, MetaMask implements both `personal_sign` and `eth_sign`.
+Because Fluent supports existing applications, Fluent implements both `personal_sign` and `eth_sign`.
 You might need to check what method your supported signers use for a given implementation.
 
 :::caution important
@@ -215,9 +210,9 @@ You might need to check what method your supported signers use for a given imple
 
 ### Example
 
-The following is an example of using `personal_sign` with MetaMask.
-See the [live example](https://metamask.github.io/test-dapp/#personalSign) and
-[test dapp source code](https://github.com/MetaMask/test-dapp).
+The following is an example of using `personal_sign` with Fluent.
+See the [live example](https://Fluent.github.io/test-dapp/#personalSign) and
+[test dapp source code](https://github.com/metamask/test-dapp).
 
 <!--tabs-->
 
@@ -251,8 +246,3 @@ personalSignButton.addEventListener('click', async function (event) {
 <h3>Personal sign</h3>
 <button type="button" id="personalSignButton">personal_sign</button>
 ```
-
-<!--/tabs-->
-
-`personal_sign` prepends the message with `\x19Ethereum Signed Message:\n<length of message>` before
-hashing and signing it.

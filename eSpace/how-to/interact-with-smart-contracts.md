@@ -25,7 +25,7 @@ the user to add a chain that you suggest, and switch to it using a confirmation 
 
 ## Contract address
 
-Every account in Ethereum has an address, whether it's an external key-pair account or a smart contract.
+Every account in Conflux eSpace has an address, whether it's an external key-pair account or a smart contract.
 For any smart contract library to communicate with your contracts, a smart contract  must know the exact address.
 
 Read about
@@ -33,7 +33,7 @@ Read about
 
 ## Contract ABI
 
-In Ethereum, the [ABI specification](https://solidity.readthedocs.io/en/develop/abi-spec.html) is a
+In Conflux eSpace, the [ABI specification](https://solidity.readthedocs.io/en/develop/abi-spec.html) is a
 way to encode the interface of a smart contract that's comprehensible to your user interface.
 The ABI is an array of method-describing objects, and when you feed this and the address into a
 contract-abstraction library, the ABI tells those libraries about what methods to provide, and

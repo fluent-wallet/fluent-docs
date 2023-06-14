@@ -64,7 +64,7 @@ If they reject the request, this method rejects with a `4001` error.
 document.getElementById('connectButton', connect);
 
 function connect() {
-  ethereum
+  conflux
     .request({ method: 'cfx_requestAccounts' })
     .then(handleAccountsChanged)
     .catch((error) => {
@@ -110,7 +110,7 @@ If the user denies the request, a `4001` error is returned.
 document.getElementById('requestPermissionsButton', requestPermissions);
 
 function requestPermissions() {
-  ethereum
+  conflux
     .request({
       method: 'wallet_requestPermissions',
       params: [{ cfx_accounts: {} }],
@@ -183,7 +183,7 @@ We recommend using this method with [`wallet_addConfluxChain`](#wallet_addconflu
 
 ```javascript
 try {
-  await ethereum.request({
+  await conflux.request({
     method: 'wallet_switchConfluxChain',
     params: [{ chainId: '0xf00' }],
   });
@@ -191,7 +191,7 @@ try {
   // This error code indicates that the chain has not been added to Fluent.
   if (switchError.code === 4902) {
     try {
-      await ethereum.request({
+      await conflux.request({
         method: 'wallet_addConfluxChain',
         params: [
           {
@@ -266,7 +266,7 @@ An object containing the following metadata of the token to watch:
 #### Example
 
 ```javascript
-ethereum
+conflux
   .request({
     method: 'wallet_watchAsset',
     params: {

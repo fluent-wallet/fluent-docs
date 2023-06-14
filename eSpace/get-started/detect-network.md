@@ -28,13 +28,11 @@ function handleChainChanged(chainId) {
 
 ## Chain IDs
 
-These are the chain IDs of the Ethereum networks that MetaMask supports by default.
-Consult [chainid.network](https://chainid.network) for more.
+These are the chain IDs of the Conflux eSpace networks that Fluent supports by default.
+Consult [ConfluxNetwork Developer Doc](https://developer.confluxnetwork.org/conflux-doc/docs/EVM-Space/evm_space_networks) for more.
 
 | Hex      | Decimal  | Network                                                                   |
 |----------|----------|---------------------------------------------------------------------------|
-| 0x1      | 1        | Ethereum main network (Mainnet)                                           |
-| 0x5      | 5        | Goerli test network                                                       |
-| 0xaa36a7 | 11155111 | Sepolia test network                                                      |
-| 0xe704   | 59140    | [Linea Goerli test network](https://docs.linea.build/)                    |
-| 0x539    | 1337     | Localhost test networks (including [Ganache](run-development-network.md)) |
+| 0x406      | 1030        | Conflux eSpace Mainnet                                            |
+| 0x47      | 71        | Conflux eSpace Testnet                                                       |
+
