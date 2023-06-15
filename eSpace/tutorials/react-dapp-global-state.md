@@ -6,7 +6,7 @@ toc_max_heading_level: 4
 
 # Create a React dapp with global state
 
-This tutorial walks you through integrating a React dapp with MetaMask.
+This tutorial walks you through integrating a React dapp with Fluent.
 The dapp has multiple components, so requires managing global state.
 You'll use the [Vite](https://v3.vitejs.dev/guide) build tool with React and TypeScript to create
 the dapp.
@@ -17,21 +17,21 @@ This tutorial is a follow-up to that tutorial.
 :::
 
 The [previous tutorial](react-dapp-local-state.md) walks you through creating a dapp that connects
-to MetaMask and handles account, balance, and network changes with a single component.
+to Fluent and handles account, balance, and network changes with a single component.
 In real world use cases, a dapp might need to respond to state changes in different components.
 
 In this tutorial, you'll move that state and its relevant functions into
 [React context](https://react.dev/reference/react/useContext), creating a
 [global state](https://react.dev/learn/reusing-logic-with-custom-hooks#custom-hooks-sharing-logic-between-components)
-so other components and UI can affect it and get MetaMask wallet updates.
+so other components and UI can affect it and get Fluent wallet updates.
 
 This tutorial also provides a few best practices for a clean code base, since you'll have multiple
 components and a slightly more complex file structure.
 
 :::info Project source code
 You can see the source code for the
-[starting point](https://github.com/MetaMask/react-dapp-tutorial/tree/global-state-start) and
-[final state](https://github.com/MetaMask/react-dapp-tutorial/tree/global-state-final) of this dapp.
+[starting point](https://github.com/fluent-wallet/react-dapp-tutorial/tree/global-state-start) and
+[final state](https://github.com/fluent-wallet/react-dapp-tutorial/tree/evm-global-state-final) of this dapp.
 :::
 
 ## Prerequisites
@@ -39,18 +39,18 @@ You can see the source code for the
 - [Node.js](https://nodejs.org/) version 18+
 - [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) version 9+
 - A text editor (for example, [VS Code](https://code.visualstudio.com/))
-- The [MetaMask extension](https://metamask.io/download) installed
+- The [Fluent Wallet extension](https://fluentwallet.com/) installed
 - Basic knowledge of TypeScript, React and React Hooks
 
 ## Steps
 
 ### 1. Set up the project
 
-Clone the [`react-dapp-tutorial`](https://github.com/MetaMask/react-dapp-tutorial) GitHub repository
+Clone the [`react-dapp-tutorial`](https://github.com/fluent-wallet/react-dapp-tutorial) GitHub repository
 on GitHub by running the following command:
 
 ```bash
-git clone https://github.com/MetaMask/react-dapp-tutorial.git
+git clone https://github.com/fluent-wallet/react-dapp-tutorial.git
 ```
 
 Checkout the `global-state-start` branch:
@@ -72,7 +72,7 @@ If you use VS Code, you can run the command `code .` to open the project.
 :::
 
 This is a working React dapp, but it's wiped out the code from the previous tutorial's
-[`App.tsx`](https://github.com/MetaMask/react-dapp-tutorial/blob/local-state-final/src/App.tsx) file.  
+[`App.tsx`](https://github.com/Fluent/react-dapp-tutorial/blob/local-state-final/src/App.tsx) file.  
 
 Run the dapp using the command `npx vite`.
 The starting point looks like the following:
@@ -81,12 +81,12 @@ The starting point looks like the following:
 
 There are three components, each with static text: navigation (with a logo area and connect button),
 display (main content area), and footer.
-You'll use the footer to show any MetaMask errors.  
+You'll use the footer to show any Fluent errors.  
 
 Before you start, comment out or remove the `border` CSS selector, as it's only used as a visual aid.
 Remove the following line from each component style sheet:
 
-```css title="Display.module.css | MetaMaskError.module.css | Navigation.module.css"
+```css title="Display.module.css | FluentError.module.css | Navigation.module.css"
 // border: 1px solid rgb(...);
 ```
 
@@ -105,13 +105,13 @@ It uses the `appContainer` class, which sets up a
 
 Using Flexbox here ensures that any child `div`s are laid out in a single-column layout (vertically).  
 
-Finally, the `/src/components` directory has subdirectories for `Display`, `Navigation`, and `MetaMaskError`.
+Finally, the `/src/components` directory has subdirectories for `Display`, `Navigation`, and `FluentError`.
 Each subdirectory contains a corresponding component file and CSS file.
 Each component is a
 [flex-items](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#aa-basics-and-terminology)
 within a
 [flex-container](https://css-tricks.com/snippets/css/a-guide-to-flexbox/#aa-flexbox-properties),
-stacked in a vertical column with the navigation and footer (`MetaMaskError`) being of fixed height
+stacked in a vertical column with the navigation and footer (`FluentError`) being of fixed height
 and the middle component (`Display`) taking up the remaining vertical space.
 
 #### Optional: Linting with ESLint
@@ -149,16 +149,16 @@ The following is a tree representation of the dapp's `/src` directory:
 │   │   |   └── index.tsx
 │   │   |   └── Display.module.css
 │   │   |   └── Display.tsx
-│   │   ├── MetaMaskError
+│   │   ├── FluentError
 │   │   |   └── index.tsx
-│   │   |   └── MetaMaskError.module.css
-│   │   |   └── MetaMaskError.tsx
+│   │   |   └── FluentError.module.css
+│   │   |   └── FluentError.tsx
 │   │   ├─── Navigation
 │   │   |   └── index.tsx
 │   │   |   └── Navigation.module.css
 │   │   |   └── Navigation.tsx
 │   ├── hooks
-│   │   ├── useMetaMask.tsx
+│   │   ├── useFluent.tsx
 │   ├── utils
 │   │   └── index.tsx
 ├── App.global.css
@@ -187,31 +187,31 @@ Since React uses a one-way data flow, any change to the data gets re-rendered in
 
 ### 2. Build the context provider
 
-In this step, you'll create a context called `MetaMaskContext` and a provider component called
-`MetaMaskContextProvider` in the `/src/hooks/useMetaMask.tsx` file.
+In this step, you'll create a context called `FluentContext` and a provider component called
+`FluentContextProvider` in the `/src/hooks/useFluent.tsx` file.
 
 This provider component will use similar `useState` and `useEffect` hooks with some changes from
 the previous tutorial's local state component to make it more DRY (don't repeat yourself).
 
-It will also have similar `updateWallet`, `connectMetaMask`, and `clearError` functions, all of
-which do their part to connect to MetaMask or update the MetaMask state.
+It will also have similar `updateWallet`, `connectFluent`, and `clearError` functions, all of
+which do their part to connect to Fluent or update the Fluent state.
 
-`MetaMaskContext` will return a `MetaMaskContext.Provider`, which takes a value of type
-`MetaMaskContextData`, and supplies that to its children.
+`FluentContext` will return a `FluentContext.Provider`, which takes a value of type
+`FluentContextData`, and supplies that to its children.
 
-You'll export a React hook called `useMetaMask`, which uses your `MetaMaskContext`.
+You'll export a React hook called `useFluent`, which uses your `FluentContext`.
 
-Update `/src/hooks/useMetaMask.tsx` with the following:
+Update `/src/hooks/useFluent.tsx` with the following:
 
 :::caution Read the comments
-The following code contains comments describing advanced React patterns and how MetaMask state is managed.
+The following code contains comments describing advanced React patterns and how Fluent state is managed.
 :::
 
-```tsx title="useMetaMask.tsx"
+```tsx title="useFluent.tsx"
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, createContext, PropsWithChildren, useContext, useCallback } from 'react'
 
-import detectEthereumProvider from '@metamask/detect-provider'
+import detectProvider from '@fluent-wallet/detect-provider'
 import { formatBalance } from '~/utils'
 
 interface WalletState {
@@ -220,21 +220,21 @@ interface WalletState {
   chainId: string
 }
 
-interface MetaMaskContextData {
+interface FluentContextData {
   wallet: WalletState
   hasProvider: boolean | null
   error: boolean
   errorMessage: string
   isConnecting: boolean
-  connectMetaMask: () => void
+  connectFluent: () => void
   clearError: () => void
 }
 
 const disconnectedState: WalletState = { accounts: [], balance: '', chainId: '' }
 
-const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContextData)
+const FluentContext = createContext<FluentContextData>({} as FluentContextData)
 
-export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
+export const FluentContextProvider = ({ children }: PropsWithChildren) => {
   const [hasProvider, setHasProvider] = useState<boolean | null>(null)
 
   const [isConnecting, setIsConnecting] = useState(false)
@@ -257,7 +257,7 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
 
     const balance = formatBalance(await window.ethereum.request({
       method: 'eth_getBalance',
-      params: [accounts[0], 'latest'],
+      params: [accounts[0]],
     }))
     const chainId = await window.ethereum.request({
       method: 'eth_chainId',
@@ -270,14 +270,17 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
   const updateWallet = useCallback((accounts: any) => _updateWallet(accounts), [_updateWallet])
 
   /**
-   * This logic checks if MetaMask is installed. If it is, some event handlers are set up
-   * to update the wallet state when MetaMask changes. The function returned by useEffect
-   * is used as a "cleanup": it removes the event handlers whenever the MetaMaskProvider
+   * This logic checks if Fluent is installed. If it is, some event handlers are set up
+   * to update the wallet state when Fluent changes. The function returned by useEffect
+   * is used as a "cleanup": it removes the event handlers whenever the FluentProvider
    * is unmounted.
    */
   useEffect(() => {
     const getProvider = async () => {
-      const provider = await detectEthereumProvider({ silent: true })
+      const provider = await detectProvider({
+        injectFlag: 'ethereum',
+        defaultWalletFlag: 'isFluent',
+      })
       setHasProvider(Boolean(provider))
 
       if (provider) {
@@ -295,7 +298,7 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
     }
   }, [updateWallet, updateWalletAndAccounts])
 
-  const connectMetaMask = async () => {
+  const connectFluent = async () => {
     setIsConnecting(true)
 
     try {
@@ -311,26 +314,26 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <MetaMaskContext.Provider
+    <FluentContext.Provider
       value={{
         wallet,
         hasProvider,
         error: !!errorMessage,
         errorMessage,
         isConnecting,
-        connectMetaMask,
+        connectFluent,
         clearError,
       }}
     >
       {children}
-    </MetaMaskContext.Provider>
+    </FluentContext.Provider>
   )
 }
 
-export const useMetaMask = () => {
-  const context = useContext(MetaMaskContext)
+export const useFluent = () => {
+  const context = useContext(FluentContext)
   if (context === undefined) {
-    throw new Error('useMetaMask must be used within a "MetaMaskContextProvider"')
+    throw new Error('useFluent must be used within a "FluentContextProvider"')
   }
   return context
 }
@@ -355,8 +358,8 @@ See more information about [`vite-tsconfig-paths`](https://github.com/aleclarson
 
 ### 3. Wrap components with the context provider
 
-In this step, you'll import the `MetaMaskContextProvider` in `/src/App.tsx` and wrap that component
-around the existing `Display`, `Navigation`, and `MetaMaskError` components.
+In this step, you'll import the `FluentContextProvider` in `/src/App.tsx` and wrap that component
+around the existing `Display`, `Navigation`, and `FluentError` components.
 
 Update `/src/App.tsx` to the following:
 
@@ -366,64 +369,64 @@ import styles from './App.module.css'
 
 import { Navigation } from './components/Navigation'
 import { Display } from './components/Display'
-import { MetaMaskError } from './components/MetaMaskError'
-import { MetaMaskContextProvider } from './hooks/useMetaMask'
+import { FluentError } from './components/FluentError'
+import { FluentContextProvider } from './hooks/useFluent'
 
 export const App = () => {
 
   return (
-    <MetaMaskContextProvider>
+    <FluentContextProvider>
       <div className={styles.appContainer}>
         <Navigation />
         <Display />
-        <MetaMaskError />
+        <FluentError />
       </div>
-    </MetaMaskContextProvider>
+    </FluentContextProvider>
   )
 }
 ```
 
-With `App.tsx` updated, you can update the `Display`, `Navigation`, and `MetaMaskError` components,
-each of which will use the `useMetaMask` hook to display the state or invoke functions that modify state.
+With `App.tsx` updated, you can update the `Display`, `Navigation`, and `FluentError` components,
+each of which will use the `useFluent` hook to display the state or invoke functions that modify state.
 
-### 4. Connect to MetaMask in the navigation
+### 4. Connect to Fluent in the navigation
 
-The `Navigation` component will connect to MetaMask using conditional rendering to show an
-**Install MetaMask** or **Connect MetaMask** button or, once connected, display your wallet address
-in a hypertext link that connects to [Etherscan](https://etherscan.io).  
+The `Navigation` component will connect to Fluent using conditional rendering to show an
+**Install Fluent** or **Connect Fluent** button or, once connected, display your wallet address
+in a hypertext link that connects to [Confluxscan](https://evm.confluxscan.io/).  
 
 Update `/src/components/Navigation/Navigation.tsx` to the following:
 
 ```tsx  title="Navigation.tsx"
-import { useMetaMask } from '~/hooks/useMetaMask'
+import { useFluent } from '~/hooks/useFluent'
 import { formatAddress } from '~/utils'
 import styles from './Navigation.module.css'
 
 export const Navigation = () => {
 
-  const { wallet, hasProvider, isConnecting, connectMetaMask } = useMetaMask()
+  const { wallet, hasProvider, isConnecting, connectFluent } = useFluent()
 
   return (
     <div className={styles.navigation}>
       <div className={styles.flexContainer}>
-        <div className={styles.leftNav}>Vite + React & MetaMask</div>
+        <div className={styles.leftNav}>Vite + React & Fluent</div>
         <div className={styles.rightNav}>
           {!hasProvider &&
-            <a href="https://metamask.io" target="_blank">
-              Install MetaMask
+            <a href="https://fluent.wallet" target="_blank" rel="noreferrer">
+              Install Fluent
             </a>
           }
-          {window.ethereum?.isMetaMask && wallet.accounts.length < 1 &&
-            <button disabled={isConnecting} onClick={connectMetaMask}>
-              Connect MetaMask
+          {window.ethereum?.isFluent && wallet.accounts.length < 1 &&
+            <button disabled={isConnecting} onClick={connectFluent}>
+              Connect Fluent
             </button>
           }
           {hasProvider && wallet.accounts.length > 0 &&
             <a
               className="text_link tooltip-bottom"
-              href={`https://etherscan.io/address/${wallet}`}
+              href={`https://evm.confluxscan.io/address/${wallet}`}
               target="_blank"
-              data-tooltip= "Open in Block Explorer"
+              data-tooltip= "Open in Block Explorer" rel="noreferrer"
             >
               {formatAddress(wallet.accounts[0])}
             </a>
@@ -435,10 +438,10 @@ export const Navigation = () => {
 }
 ```
 
-Notice how `useMetaMask` de-structures its return value to get the items within `MetaMaskContextData`:
+Notice how `useFluent` de-structures its return value to get the items within `FluentContextData`:
 
 ```ts
-const { wallet, hasProvider, isConnecting, connectMetaMask } = useMetaMask()
+const { wallet, hasProvider, isConnecting, connectFluent } = useFluent()
 ```
 
 Also, the `formatAddress` function formats the wallet address for display purposes:
@@ -475,21 +478,21 @@ profile component (side quest).
 
 ![](../assets/tutorials/react-dapp/pt2-03.png)
 
-### 5. Display MetaMask data
+### 5. Display Fluent data
 
 In the `Display` component, you won't call any functions that modify state; you'll read from
-`MetaMaskData`, a simple update.
+`FluentData`, a simple update.
 
 Update `/src/components/Display/Display.tsx` to the following:
 
 ```tsx title="Display.tsx"
-import { useMetaMask } from '~/hooks/useMetaMask'
+import { useFluent } from '~/hooks/useFluent'
 import { formatChainAsNum } from '~/utils'
 import styles from './Display.module.css'
 
 export const Display = () => {
 
-  const { wallet } = useMetaMask()
+  const { wallet } = useFluent()
 
   return (
     <div className={styles.display}>
@@ -506,31 +509,31 @@ export const Display = () => {
 }
 ```
 
-Notice how `useMetaMask` de-structures its return value to get only the `wallet` data:
+Notice how `useFluent` de-structures its return value to get only the `wallet` data:
 
 ```ts
-const { wallet } = useMetaMask()
+const { wallet } = useFluent()
 ```
 
 At this point, you can display `account`, `balance`, and `chainId` in the `Display` component:
 
 ![](../assets/tutorials/react-dapp/pt2-04.png)
 
-### 6. Show MetaMask errors in the footer
+### 6. Show Fluent errors in the footer
 
-If MetaMask errors or the user rejects a connection, you can display that error in the footer, or
-`MetaMaskError` component.
+If Fluent errors or the user rejects a connection, you can display that error in the footer, or
+`FluentError` component.
 
-Update `/src/components/MetaMaskError/MetaMaskError.tsx` to the following:
+Update `/src/components/FluentError/FluentError.tsx` to the following:
 
-```tsx title="MetaMaskError.tsx"
-import { useMetaMask } from '~/hooks/useMetaMask'
-import styles from './MetaMaskError.module.css'
+```tsx title="FluentError.tsx"
+import { useFluent } from '~/hooks/useFluent'
+import styles from './FluentError.module.css'
 
-export const MetaMaskError = () => {
-  const { error, errorMessage, clearError } = useMetaMask()
+export const FluentError = () => {
+  const { error, errorMessage, clearError } = useFluent()
   return (
-    <div className={styles.metaMaskError} style={
+    <div className={styles.FluentError} style={
       error ? { backgroundColor: 'brown' } : {}
     }>
       { error && (
@@ -544,19 +547,19 @@ export const MetaMaskError = () => {
 }
 ```
 
-Notice how `useMetaMask` de-structures its return value to get only the `error`, `errorMessage`, and
+Notice how `useFluent` de-structures its return value to get only the `error`, `errorMessage`, and
 `clearError` data:
 
 ```ts
-const { error, errorMessage, clearError } = useMetaMask()
+const { error, errorMessage, clearError } = useFluent()
 ```
 
-When you generate an error by cancelling the connection to MetaMask, this shows up in the footer.
+When you generate an error by cancelling the connection to Fluent, this shows up in the footer.
 The background temporarily turns a dark red color:
 
 ![](../assets/tutorials/react-dapp/pt2-05.png)
 
-In this tutorial's dapp, you can dismiss any MetaMask error displayed in the footer by selecting it.
+In this tutorial's dapp, you can dismiss any Fluent error displayed in the footer by selecting it.
 In a real-world dapp, the best UI/UX for error dismissing would be a component that displays in a
 modal or overlay and provides an obvious dismiss button.
 
@@ -565,7 +568,7 @@ modal or overlay and provides an obvious dismiss button.
 You've successfully converted a single component dapp with local state to a multiple component dapp
 with global state, using React context and provider.
 You can modify the dapp's global state using functions and data that, when used anywhere in the dapp,
-will show up-to-date data associated with your MetaMask wallet.
+will show up-to-date data associated with your Fluent wallet.
 
-You can see the [source code](https://github.com/MetaMask/react-dapp-tutorial/tree/global-state-final)
+You can see the [source code](https://github.com/fluent-wallet/react-dapp-tutorial/tree/evm-global-state-final)
 for the final state of this dapp tutorial.
