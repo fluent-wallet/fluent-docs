@@ -45,8 +45,3 @@ try {
 }
 ```
 
-For more examples, the following are live web dapps that let you enter your token details and share
-them using a simple web link:
-
-- [WatchToken](https://vittominacori.github.io/watch-token/create/)
-- [Add Token dapp](https://Fluent.github.io/Add-Token/#edit)

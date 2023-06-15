@@ -4,7 +4,7 @@ description: Detect the Fluent Conflux provider object.
 
 # Detect Fluent
 
-The presence of the Fluent Conflux provider object, `window.ethereum`, in a user's browser
+The presence of the Fluent ethereum provider object, `window.ethereum`, in a user's browser
 indicates an Conflux user.
 
 To demonstrate this, verify if your browser is running Fluent by copying and pasting the following
@@ -24,7 +24,7 @@ To differentiate Fluent from other Ethereum-compatible browsers, you can detect 
 ## Use @fluent-wallet/detect-provider
 
 We recommend using the [`@fluent-wallet/detect-provider`](https://github.com/fluent-wallet/detect-provider)
-module to detect the Fluent Conflux provider on any platform or browser.
+module to detect the Fluent Ethereum provider on any platform or browser.
 
 Use [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) to install
 `@fluent-wallet/detect-provider` in your project directory:
@@ -40,7 +40,7 @@ provider using `@fluent-wallet/detect-provider`:
 // This function detects most providers injected at window.ethereum.This returns the provider, or null if it wasn't detected.
 import detectProvider from "@fluent-wallet/detect-provider";
 const provider = await detectProvider({
-        injectFlag: "conflux",
+        injectFlag: "ethereum",
         defaultWalletFlag: "isFluent",
 });
 

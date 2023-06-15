@@ -37,7 +37,7 @@ For any Conflux dapp to work, your project script `index.js` must:
 
 - [Detect the Fluent provider.](detect-fluent)
 - [Detect which Conflux eSpace network the user is connected to.](detect-network)
-- [Access the user's Conflux accounts.](access-accounts)
+- [Access the user's Conflux eSpace accounts.](access-accounts)
 
 :::caution important
 If you import any modules into your project, such as

@@ -12,7 +12,6 @@ You can use the following RPC methods to request cryptographic signatures from u
 - [`personal_sign`](#use-personal_sign) - Use this method for the easiest way to request human-readable
   signatures that don't need to be efficiently processed on-chain.
 
-Read more about [the history of the signing methods](../concepts/signing-methods.md).
 
 :::note
 Fluent supports signing transactions using  Ledger hardware wallets.
@@ -135,7 +134,7 @@ signTypedDataV4Button.addEventListener('click', async function (event) {
     },
   });
 
-  const [from] = await provider.request({method: 'cfx_accounts'});
+  const [from] = await provider.request({method: 'eth_accounts'});
 
   var params = [from[0], msgParams];
   var method = 'eth_signTypedData_v4';
@@ -211,7 +210,7 @@ You might need to check what method your supported signers use for a given imple
 ### Example
 
 The following is an example of using `personal_sign` with Fluent.
-See the [live example](https://Fluent.github.io/test-dapp/#personalSign) and
+See the [live example](https://metamask.github.io/test-dapp/#personalSign) and
 [test dapp source code](https://github.com/metamask/test-dapp).
 
 <!--tabs-->

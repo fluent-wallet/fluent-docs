@@ -20,7 +20,7 @@ It supports the following dapp platforms:
 </div>
 
 :::note
-JS-CONFLUX-SDK uses the [Conflux provider](../../reference/provider-api.md) that developers are
+JS-CONFLUX-SDK uses the [Ethereum provider](../../reference/provider-api.md) that developers are
 already used to, so existing dapps work out of the box with the SDK.
 :::
 

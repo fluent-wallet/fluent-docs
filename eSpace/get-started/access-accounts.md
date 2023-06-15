@@ -20,7 +20,7 @@ When accessing a user's accounts:
 ## Create a connect button
 
 We recommend providing a button to allow users to connect Fluent to your dapp.
-Selecting this button should call `eth_requestAccounts` to access the user's account.
+Selecting this button should call [`eth_requestAccounts`](../reference/rpc-api.md#eth_requestaccounts) to access the user's account.
 
 In the [example project code](set-up-dev-environment.md#example), the following JavaScript code
 accesses the user's accounts when they select a connect button, and the following HTML code

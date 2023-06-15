@@ -78,8 +78,7 @@ This means that transactions are always processed in order for a given account.
 Nonces are easy to mess up, especially when a user is interacting with multiple applications with
 pending transactions using the same account, potentially across multiple devices.
 Because of this, Fluent doesn't allow dapp developers to customize nonces.
-Instead, Fluent
-[assists the user in managing their transaction queue themselves](https://Fluent.zendesk.com/hc/en-us/articles/360015489251).
+
 
 ### Gas price
 
@@ -97,7 +96,6 @@ your dapp knows more about the target network than Fluent does.
 On the default networks, Fluent allows users to choose between slow, medium, and fast options for
 their gas price.
 
-Read about [how to use advanced gas controls](https://Fluent.zendesk.com/hc/en-us/articles/360022895972).
 
 ### Gas limit
 
