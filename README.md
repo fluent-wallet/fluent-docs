@@ -1,7 +1,7 @@
-# MetaMask developer documentation
+# Fluent developer documentation
 
-This is the MetaMask developer documentation repository.
-The documentation site is hosted at [docs.metamask.io](https://docs.metamask.io/wallet), and it's
+This is the Fluent developer documentation repository.
+The documentation site is hosted at [docs.fluentwallet.com](https://doc.fluentwallet.com), and it's
 built using [Docusaurus](https://docusaurus.io/), a static site generator purpose-built for
 technical documentation.
 

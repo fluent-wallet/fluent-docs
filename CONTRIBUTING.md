@@ -1,20 +1,22 @@
 # Contribute to the documentation
 
-Thank you for your interest in contributing to the MetaMask developer documentation!
+Thank you for your interest in contributing to the Fluent developer documentation!
 
 ## Table of contents
 
-- [Contribution workflow](#contribution-workflow)
-  - [Preview locally](#preview-locally)
-- [Style guide](#style-guide)
-  - [Images](#images)
-- [Markdown guide](#markdown-guide)
-  - [Simplified tabs](#simplified-tabs)
-  - [Live code blocks](#live-code-blocks)
+- [Contribute to the documentation](#contribute-to-the-documentation)
+  - [Table of contents](#table-of-contents)
+  - [Contribution workflow](#contribution-workflow)
+    - [Preview locally](#preview-locally)
+  - [Style guide](#style-guide)
+    - [Images](#images)
+  - [Markdown guide](#markdown-guide)
+    - [Simplified tabs](#simplified-tabs)
+    - [Live code blocks](#live-code-blocks)
 
 ## Contribution workflow
 
-The MetaMask documentation contribution workflow involves proposing changes by creating
+The Fluent documentation contribution workflow involves proposing changes by creating
 [branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)
 and
 [pull requests (PRs)](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
@@ -23,7 +25,7 @@ This facilitates open contributions, testing, and peer review.
 
 To contribute changes:
 
-1. Search for an [existing issue](https://github.com/MetaMask/metamask-docs/issues) to work on, or
+1. Search for an [existing issue](https://github.com/fluent-wallet/fluent-docs/issues) to work on, or
    [create a new issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue)
    describing the content issue you'd like to address.
    Make sure no one else is assigned to the issue, and assign yourself to it.
@@ -33,7 +35,7 @@ To contribute changes:
    this repository to your computer.
 
     ```bash
-    git clone https://github.com/MetaMask/metamask-docs.git
+    git clone https://github.com/fluent-wallet/fluent-docs.git
     ```
 
 3. [Create and checkout a topic branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging),
@@ -53,9 +55,9 @@ To contribute changes:
    documentation changes.
 
    > **Notes:**
-   > - All documentation content is located in the `wallet` and `snaps` directories.
-   > - If you add a new documentation page, make sure to edit `wallet-sidebar.js` or
-       `snaps-sidebar.js` to [add the page to the sidebar](https://docusaurus.io/docs/sidebar/items).
+   > - All documentation content is located in the `conflux` and `espace` directories.
+   > - If you add a new documentation page, make sure to edit `conflux-sidebar.js` or
+       `espace-sidebar.js` to [add the page to the sidebar](https://docusaurus.io/docs/sidebar/items).
    > - If you delete, rename, or move a documentation file, make sure to add a redirect to the
        [redirect plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-client-redirects)
        in `docusaurus.config.js`.
@@ -71,7 +73,7 @@ To contribute changes:
     git push origin
     ```
 
-7. On [this repository on GitHub](https://github.com/MetaMask/metamask-docs), you’ll see a banner
+7. On [this repository on GitHub](https://github.com/fluent-wallet/fluent-docs), you’ll see a banner
    prompting you to create a PR with your recent changes.
    Create a PR, describing your changes in detail.
    [Link the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
@@ -82,7 +84,7 @@ To contribute changes:
    issue raiser.
    Make any required changes to your PR based on reviewer feedback, repeating steps 4–6.
 
-9. After your PR is approved by two reviewers, all checks have passed, and your branch has no
+9. After your PR is approved by reviewers, all checks have passed, and your branch has no
    conflicts with the main branch, you can merge your PR.
    If you don't have merge access, a maintainer will merge your PR for you.
    You can delete the topic branch after your PR is merged.
@@ -105,14 +107,14 @@ preview them by running `yarn build && yarn serve`.
 
 ## Style guide
 
-The MetaMask documentation follows the
+The Fluent documentation follows the
 [ConsenSys documentation style guide](https://docs-template.consensys.net/getting-started/style-guide)
 and the [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/).
 Refer to those guides for any questions on writing style.
 
 ### Images
 
-All images are located in the `wallet/assets` and `snaps/assets` directories.
+All images are located in the `conflux/assets` and `espace/assets` directories.
 When adding a new image, such as a screenshot or diagram, make sure the image has a white or
 `#1b1b1d` color background in order for it to be compatible with the site's light and dark modes.
 
@@ -127,7 +129,7 @@ Markdown and MDX features.
 > **Tip:** [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions),
 [tabs](https://docusaurus.io/docs/markdown-features/tabs), and
 [code blocks](https://docusaurus.io/docs/markdown-features/code-blocks) are frequently used in the
-MetaMask documentation.
+Fluent documentation.
 
 The following sections describe features that aren't documented in the Docusaurus documentation.
 
