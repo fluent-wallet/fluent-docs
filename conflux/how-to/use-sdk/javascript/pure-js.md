@@ -31,7 +31,7 @@ To import, instantiate, and use the SDK, you can insert a script in the head sec
 </head>
 ```
 
-You can configure the SDK using any [options](../../../reference/sdk-js-options.md) and call any
+You can configure the SDK and call any
 [provider API methods](../../../reference/provider-api.md).
 Always call [`cfx_requestAccounts`](../../../reference/rpc-api.md#eth_requestaccounts) using
 [`provider.request()`](../../../reference/provider-api.md#windowconfluxrequestargs) first, since it

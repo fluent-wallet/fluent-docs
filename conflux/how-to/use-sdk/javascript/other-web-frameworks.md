@@ -30,7 +30,6 @@ import { Conflux } from 'js-conflux-sdk';
 
 ### 3. Instantiate the SDK
 
-Instantiate the SDK using any [options](../../../reference/sdk-js-options.md):
 
 ```javascript
 const cfxClient=new Conflux();

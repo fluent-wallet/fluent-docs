@@ -61,8 +61,8 @@ const config = {
       /** @type {import('@docusaurus/plugin-content-docs').PluginOptions} */
       ({
         id: "espace",
-        path: "eSpace",
-        routeBasePath: "eSpace",
+        path: "espace",
+        routeBasePath: "espace",
         sidebarPath: require.resolve("./espace-sidebar.js"),
         breadcrumbs: false,
         remarkPlugins: [
@@ -104,10 +104,6 @@ const config = {
             to: "/conflux/reference/provider-api",
           },
           {
-            from: "/guide/provider-migration",
-            to: "/conflux/how-to/migrate-api",
-          },
-          {
             from: "/guide/rpc-api",
             to: "/conflux/reference/rpc-api",
           },
@@ -136,24 +132,8 @@ const config = {
             to: "/conflux/how-to/access-provider",
           },
           {
-            from: "/guide/mobile-getting-started",
-            to: "/conflux/how-to/use-mobile",
-          },
-          {
-            from: "/guide/site-compatibility-checklist",
-            to: "/conflux/how-to/use-mobile",
-          },
-          {
-            from: "/guide/mobile-best-practices",
-            to: "/conflux/how-to/use-mobile",
-          },
-          {
             from: "/guide/espace",
             to: "/espace/",
-          },
-          {
-            from: "/guide/espace-development-guide",
-            to: "/espace/how-to/develop-a-snap",
           },
           {
             from: "/guide/espace-concepts",
@@ -162,18 +142,6 @@ const config = {
           {
             from: "/guide/espace-rpc-api",
             to: "/espace/reference/rpc-api",
-          },
-          {
-            from: "/guide/espace-permissions",
-            to: "/espace/how-to/request-permissions",
-          },
-          {
-            from: "/guide/espace-exports",
-            to: "/espace/reference/exports",
-          },
-          {
-            from: "/guide/espace-patching-dependencies",
-            to: "/espace/how-to/troubleshoot",
           },
           {
             from: "/guide/create-dapp",

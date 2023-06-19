@@ -41,9 +41,6 @@ const sidebar = {
                 "how-to/use-sdk/javascript/react",
                 "how-to/use-sdk/javascript/pure-js",
                 "how-to/use-sdk/javascript/other-web-frameworks",
-                // "how-to/use-sdk/javascript/react-native",
-                // "how-to/use-sdk/javascript/nodejs",
-                // "how-to/use-sdk/javascript/electron",
               ],
             },
             // {
