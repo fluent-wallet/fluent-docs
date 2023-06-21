@@ -10,8 +10,8 @@ const config = {
   // tagline: '',
   url: "https://docs.fluent.wallet",
   baseUrl: process.env.DEST || "/", // overwritten in github action for staging / latest
-  onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenLinks: "ignore",
+  onBrokenMarkdownLinks: "ignore",
   favicon: "img/fluent-icon.svg",
 
   // GitHub pages deployment config.
@@ -28,7 +28,6 @@ const config = {
   },
 
   trailingSlash: true,
-  onBrokenLinks:"ignore",
 
   scripts: [
     { src: "https://plausible.io/js/script.js", defer: true, "data-domain": "docs.fluent.wallet" },
