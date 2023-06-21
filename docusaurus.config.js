@@ -27,14 +27,16 @@ const config = {
     locales: ["en"],
   },
 
+  trailingSlash: true,
+  onBrokenLinks:"ignore",
+
   scripts: [
     { src: "https://plausible.io/js/script.js", defer: true, "data-domain": "docs.fluent.wallet" },
   ],
 
   presets: [
     [
-      "classic",
-      /** @type {import('@docusaurus/preset-classic').Options} */
+      "@docusaurus/preset-classic",
       ({
         docs: {
           path: "conflux",
@@ -57,8 +59,7 @@ const config = {
   ],
   plugins: [
     [
-      "content-docs",
-      /** @type {import('@docusaurus/plugin-content-docs').PluginOptions} */
+      "@docusaurus/plugin-content-docs",
       ({
         id: "espace",
         path: "espace",
