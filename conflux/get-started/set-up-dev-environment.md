@@ -147,7 +147,7 @@ async function getAccount() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Simple dapp</title>
-  <script type="module" src="index.js"></script>
+  <script type="module" src="main.js"></script>
 </head>
 <body>
   <!-- Display a connect button and the current account -->
